@@ -31,11 +31,11 @@ namespace QtNodes {
     }
 
     bool ConnectionState::hovered() const {
-        return _hovered;
+        return m_Hovered;
     }
 
     void ConnectionState::setHovered(bool hovered) {
-        _hovered = hovered;
+        m_Hovered = hovered;
     }
 
     void ConnectionState::setLastHoveredNode(NodeId const nodeId) {
@@ -53,6 +53,38 @@ namespace QtNodes {
         }
 
         _lastHoveredNode = InvalidNodeId;
+    }
+
+    bool ConnectionState::isConnectionWidgetHovered() const {
+        return m_ConnectionWidgetHovered;
+    }
+
+    void ConnectionState::setConnectionWidgetHovered(bool hovered) {
+        m_ConnectionWidgetHovered = hovered;
+    }
+
+    bool ConnectionState::isConnectionWidgetSelected() const {
+        return m_ConnectionWidgetSelected;
+    }
+
+    void ConnectionState::setConnectionWidgetSelected(bool selected) {
+        m_ConnectionWidgetSelected = selected;
+    }
+
+    bool ConnectionState::isConnectionLineSelected() const {
+        return m_ConnectionLineSelected;
+    }
+
+    void ConnectionState::setConnectionLineSelected(bool selected) {
+        m_ConnectionLineSelected = selected;
+    }
+
+    bool ConnectionState::isConnectionWidgetPressed() const {
+        return m_ConnectionWidgetPressed;
+    }
+
+    void ConnectionState::setConnectionWidgetPressed(bool pressed) {
+        m_ConnectionWidgetPressed = pressed;
     }
 
 } // namespace QtNodes

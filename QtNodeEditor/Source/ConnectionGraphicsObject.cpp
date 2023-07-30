@@ -21,13 +21,14 @@
 #include <QtCore/QDebug>
 
 #include <stdexcept>
+#include <QMessageBox>
 
 namespace QtNodes {
 
     ConnectionGraphicsObject::ConnectionGraphicsObject(BasicGraphicsScene &scene,
                                                        ConnectionId const connectionId)
             : _connectionId(connectionId), _graphModel(scene.graphModel()), _connectionState(*this), _out{0, 0},
-              _in{0, 0} {
+              _in{0, 0}, m_ConnectionGeometry(this) {
         scene.addItem(this);
 
         setFlag(QGraphicsItem::ItemIsMovable, true);
@@ -118,7 +119,7 @@ namespace QtNodes {
         //return path;
 
 #else
-        return ConnectionPainter::getPainterStroke(*this);
+        return ConnectionPainter::getPainterStroke(const_cast<ConnectionGraphicsObject*>(this));
 #endif
     }
 
@@ -177,16 +178,32 @@ namespace QtNodes {
     void ConnectionGraphicsObject::paint(QPainter *painter,
                                          QStyleOptionGraphicsItem const *option,
                                          QWidget *) {
+        m_ConnectionGeometry.updateGeometry();
+
         if (!scene())
             return;
 
         painter->setClipRect(option->exposedRect);
 
-        ConnectionPainter::paint(painter, *this);
+        ConnectionPainter::paint(painter, this);
     }
 
     void ConnectionGraphicsObject::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+        // connection widget
+        QPointF localPos = event->pos();
+        if(m_ConnectionGeometry.getConditionWidgetRect().contains(localPos)){
+            _connectionState.setConnectionLineSelected(false);
+            _connectionState.setConnectionWidgetPressed(true);
+            _connectionState.setConnectionWidgetPressed(true);
+            qDebug() << "Press Mouse:" << localPos;
+        }else{
+            _connectionState.setConnectionLineSelected(true);
+            _connectionState.setConnectionWidgetPressed(false);
+        }
+
         QGraphicsItem::mousePressEvent(event);
+
+        update();
     }
 
     void ConnectionGraphicsObject::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
@@ -220,6 +237,18 @@ namespace QtNodes {
     void ConnectionGraphicsObject::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
         QGraphicsItem::mouseReleaseEvent(event);
 
+        QPointF localPos = event->pos();
+
+        if(m_ConnectionGeometry.getConditionWidgetRect().contains(localPos) && _connectionState.isConnectionWidgetPressed()){
+            QMessageBox msg;
+            msg.setText("Hello World!");
+            msg.exec();
+
+        }
+
+        _connectionState.setConnectionWidgetPressed(false);
+        qDebug() << "Release Mouse:" << localPos;
+
         ungrabMouse();
         event->accept();
 
@@ -242,15 +271,24 @@ namespace QtNodes {
             // Resulting unique_ptr is not used and automatically deleted.
             nodeScene()->resetDraftConnection();
         }
+
+        update();
     }
 
     void ConnectionGraphicsObject::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
         _connectionState.setHovered(true);
 
-        update();
-
         // Signal
         nodeScene()->connectionHovered(connectionId(), event->screenPos());
+
+        // connection widget
+        QPointF localPos = event->pos();
+        if(m_ConnectionGeometry.getConditionWidgetRect().contains(localPos)){
+            _connectionState.setConnectionWidgetHovered(true);
+            qDebug() << "Inside Local position:" << localPos;
+        }
+
+        update();
 
         event->accept();
     }
@@ -258,10 +296,15 @@ namespace QtNodes {
     void ConnectionGraphicsObject::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
         _connectionState.setHovered(false);
 
-        update();
-
         // Signal
         nodeScene()->connectionHoverLeft(connectionId());
+
+        // connection widget
+        QPointF localPos = event->pos();
+        qDebug() << "Outside - Local position: " << localPos;
+        _connectionState.setConnectionWidgetHovered(false);
+
+        update();
 
         event->accept();
     }

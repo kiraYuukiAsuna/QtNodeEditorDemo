@@ -1,5 +1,8 @@
 <RCC version="1.0">
     <qresource>
         <file>DefaultStyle.json</file>
+        <file>image/conditions.png</file>
+        <file>image/setting-filling.png</file>
+        <file>image/setting-fill.png</file>
     </qresource>
 </RCC>

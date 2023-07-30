@@ -64,6 +64,7 @@ set(CPP_SOURCE_FILES
         Source/StyleCollection.cpp
         Source/UndoCommands.cpp
         Source/locateNode.cpp
+        Source/ConnectionGeometry.cpp
         )
 
 set(HPP_HEADER_FILES
@@ -101,7 +102,7 @@ set(HPP_HEADER_FILES
         Source/DefaultVerticalNodeGeometry.hpp
         Source/NodeConnectionInteraction.hpp
         Source/UndoCommands.hpp
-        )
+        Source/ConnectionGeometry.hpp)
 
 add_library(QtNodes
         ${CPP_SOURCE_FILES}

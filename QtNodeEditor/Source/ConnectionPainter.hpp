@@ -13,9 +13,9 @@ namespace QtNodes {
 
     class ConnectionPainter {
     public:
-        static void paint(QPainter *painter, ConnectionGraphicsObject const &cgo);
+        static void paint(QPainter *painter, ConnectionGraphicsObject* cgo);
 
-        static QPainterPath getPainterStroke(ConnectionGraphicsObject const &cgo);
+        static QPainterPath getPainterStroke(ConnectionGraphicsObject* cgo);
     };
 
 } // namespace QtNodes

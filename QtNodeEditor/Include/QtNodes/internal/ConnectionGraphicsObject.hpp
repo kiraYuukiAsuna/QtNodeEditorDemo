@@ -4,7 +4,7 @@
 
 #include <QtCore/QUuid>
 #include <QtWidgets/QGraphicsObject>
-
+#include "ConnectionGeometry.hpp"
 #include "ConnectionState.hpp"
 #include "Definitions.hpp"
 
@@ -17,7 +17,7 @@ namespace QtNodes {
     class BasicGraphicsScene;
 
 /// Graphic Object for connection. Adds itself to scene
-    class ConnectionGraphicsObject : public QGraphicsObject {
+class ConnectionGraphicsObject : public QGraphicsObject {
     Q_OBJECT
     public:
         // Needed for qgraphicsitem_cast
@@ -60,6 +60,10 @@ namespace QtNodes {
 
         ConnectionState &connectionState();
 
+        ConnectionGeometry& getConnectionGeometry(){
+            return m_ConnectionGeometry;
+        }
+
     protected:
         void paint(QPainter *painter,
                    QStyleOptionGraphicsItem const *option,
@@ -90,6 +94,8 @@ namespace QtNodes {
         AbstractGraphModel &_graphModel;
 
         ConnectionState _connectionState;
+
+        ConnectionGeometry m_ConnectionGeometry;
 
         mutable QPointF _out;
         mutable QPointF _in;

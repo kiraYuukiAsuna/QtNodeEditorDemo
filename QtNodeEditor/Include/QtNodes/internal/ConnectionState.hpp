@@ -24,7 +24,8 @@ namespace QtNodes {
 
     public:
         ConnectionState(ConnectionGraphicsObject &cgo)
-                : _cgo(cgo), _hovered(false) {}
+                : _cgo(cgo), m_Hovered(false), m_ConnectionWidgetHovered(false), m_ConnectionWidgetSelected(false), m_ConnectionLineSelected(
+                false), m_ConnectionWidgetPressed(false) {}
 
         ConnectionState(ConnectionState const &) = delete;
 
@@ -45,6 +46,22 @@ namespace QtNodes {
 
         void setHovered(bool hovered);
 
+        bool isConnectionWidgetHovered() const;
+
+        void setConnectionWidgetHovered(bool hovered);
+
+        bool isConnectionWidgetSelected() const;
+
+        void setConnectionWidgetSelected(bool selected);
+
+        bool isConnectionLineSelected() const;
+
+        void setConnectionLineSelected(bool selected);
+
+        bool isConnectionWidgetPressed() const;
+
+        void setConnectionWidgetPressed(bool pressed);
+
     public:
         /// Caches NodeId for further interaction.
         void setLastHoveredNode(NodeId const nodeId);
@@ -56,7 +73,16 @@ namespace QtNodes {
     private:
         ConnectionGraphicsObject &_cgo;
 
-        bool _hovered;
+        bool m_Hovered;
+
+        bool m_ConnectionWidgetHovered;
+
+        bool m_ConnectionWidgetSelected;
+
+        bool m_ConnectionLineSelected;
+
+        bool m_ConnectionWidgetPressed;
+//        bool m_ConnectionWidgetReleased;
 
         NodeId _lastHoveredNode{InvalidNodeId};
     };
