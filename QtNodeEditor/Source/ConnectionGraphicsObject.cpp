@@ -42,6 +42,8 @@ namespace QtNodes {
         setZValue(-1.0);
 
         initializePosition();
+
+        m_ConnectionGeometry.updateGeometry();
     }
 
     void ConnectionGraphicsObject::initializePosition() {
@@ -249,6 +251,8 @@ namespace QtNodes {
         _connectionState.setConnectionWidgetPressed(false);
         qDebug() << "Release Mouse:" << localPos;
 
+        update();
+
         ungrabMouse();
         event->accept();
 
@@ -272,7 +276,6 @@ namespace QtNodes {
             nodeScene()->resetDraftConnection();
         }
 
-        update();
     }
 
     void ConnectionGraphicsObject::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {

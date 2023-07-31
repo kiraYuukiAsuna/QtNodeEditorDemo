@@ -26,6 +26,21 @@ namespace QtNodes {
             m_IconPosition = cubic.pointAtPercent(0.50) - QPoint(m_IconSize.width() / 2, m_IconSize.height() / 2);
         }
 
+        QRectF getShrinkConditionWidgetRect(float shrinkRatio){
+            auto cubic = cubicPath(m_ConnectionGraphicsObject);
+            return {cubic.pointAtPercent(0.50) - QPoint(m_IconSize.width() * shrinkRatio / 2, m_IconSize.height() * shrinkRatio / 2),
+                                     QSize(m_IconSize.width() * shrinkRatio, m_IconSize.height() * shrinkRatio)};
+        }
+
+        QSize getShrinkIconSize(float shrinkRatio){
+            return m_IconSize * shrinkRatio;
+        }
+
+        QPointF getShrinkIconPosition(float shrinkRatio){
+            auto cubic = cubicPath(m_ConnectionGraphicsObject);
+            return cubic.pointAtPercent(0.50) - QPoint(m_IconSize.width() * shrinkRatio / 2, m_IconSize.height() * shrinkRatio / 2);
+        }
+
         QRectF getConditionWidgetRect() {
             return m_ConditionWidgetRect;
         }

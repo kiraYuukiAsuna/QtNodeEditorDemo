@@ -212,28 +212,26 @@ namespace QtNodes {
                 if(cgo->connectionState().isConnectionWidgetPressed()){
                     iconPath = ":/image/setting-fill.png";
                     backgroundColor = QColor{0x92ACFF};
-                    float shrinkRatio = 0.7;
+                    shrinkRatio = 0.9;
                 }else if(cgo->connectionState().isConnectionWidgetHovered()){
                     iconPath = ":/image/setting-fill.png";
                     backgroundColor = QColor{0xCBEDFF};
-                    float shrinkRatio = 0.8;
+                    shrinkRatio = 1.1;
                 }else{
                     iconPath = ":/image/setting-filling.png";
                     backgroundColor = QColor{0xFFFFFF};
-                    float shrinkRatio = 1.0;
+                    shrinkRatio = 1.0;
                 }
 
                 QPixmap originalPixmap(iconPath);
-                QPixmap pixmap = originalPixmap.scaled({cgo->getConnectionGeometry().getIconSize().width(),
-                                                        cgo->getConnectionGeometry().getIconSize().height()});
-
-                p.setWidth(0);
+                QPixmap pixmap = originalPixmap.scaled(QSize(cgo->getConnectionGeometry().getShrinkIconSize(shrinkRatio).width(),
+                                                             cgo->getConnectionGeometry().getShrinkIconSize(shrinkRatio).height()));
+                qDebug() << cgo->getConnectionGeometry().getShrinkConditionWidgetRect(shrinkRatio);
                 p.setColor(backgroundColor);
                 painter->setBrush(backgroundColor);
                 painter->setPen(p);
-                painter->drawRoundedRect(cgo->getConnectionGeometry().getConditionWidgetRect(), 3.0, 3.0);
-                painter->drawPixmap(cgo->getConnectionGeometry().getIconPosition(),
-                                    pixmap);
+                painter->drawRoundedRect(cgo->getConnectionGeometry().getShrinkConditionWidgetRect(shrinkRatio), 3.0, 3.0);
+                painter->drawPixmap(cgo->getConnectionGeometry().getShrinkIconPosition(shrinkRatio), pixmap);
             }
         } else {
             p.setColor(normalColorOut);

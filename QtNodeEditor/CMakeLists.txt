@@ -39,6 +39,8 @@ endif ()
 # We'll have to manually specify some files
 set(CMAKE_AUTOMOC ON)
 
+include_directories(Include)
+
 set(CPP_SOURCE_FILES
         Source/AbstractGraphModel.cpp
         Source/AbstractNodeGeometry.cpp
