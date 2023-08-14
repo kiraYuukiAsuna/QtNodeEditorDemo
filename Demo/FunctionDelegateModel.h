@@ -97,7 +97,7 @@ public:
         return m_LineEdit;
     }
 
-    virtual bool resizable() const { return true; }
+    virtual bool resizable() const { return false; }
 
 
     // slots

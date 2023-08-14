@@ -17,12 +17,10 @@
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 #include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QStyleOptionGraphicsItem>
-
 #include <QtCore/QDebug>
 
 #include <stdexcept>
 #include <QMessageBox>
-
 namespace QtNodes {
 
     ConnectionGraphicsObject::ConnectionGraphicsObject(BasicGraphicsScene &scene,
@@ -30,6 +28,7 @@ namespace QtNodes {
             : _connectionId(connectionId), _graphModel(scene.graphModel()), _connectionState(*this), _out{0, 0},
               _in{0, 0}, m_ConnectionGeometry(this) {
         scene.addItem(this);
+
 
         setFlag(QGraphicsItem::ItemIsMovable, true);
         setFlag(QGraphicsItem::ItemIsFocusable, true);
@@ -245,7 +244,6 @@ namespace QtNodes {
             QMessageBox msg;
             msg.setText("Hello World!");
             msg.exec();
-
         }
 
         _connectionState.setConnectionWidgetPressed(false);

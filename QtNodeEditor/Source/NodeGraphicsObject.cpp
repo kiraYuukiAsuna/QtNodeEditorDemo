@@ -114,7 +114,6 @@ namespace QtNodes {
     QRectF NodeGraphicsObject::boundingRect() const {
         AbstractNodeGeometry &geometry = nodeScene()->nodeGeometry();
         return geometry.boundingRect(_nodeId);
-        //return NodeGeometry(_nodeId, _graphModel, nodeScene()).boundingRect();
     }
 
     void NodeGraphicsObject::setGeometryChanged() {
@@ -153,10 +152,19 @@ namespace QtNodes {
     }
 
     void NodeGraphicsObject::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-        //if (_nodeState.locked())
-        //return;
-
+        QPointF localPos = event->scenePos();
+        localPos = mapFromScene(localPos);
         AbstractNodeGeometry &geometry = nodeScene()->nodeGeometry();
+        auto pos = geometry.deleteIconPosition(_nodeId);
+        QRectF rect{pos.x(),pos.y(),geometry.deleteIconRect(_nodeId).width(),
+                    geometry.deleteIconRect(_nodeId).height()};
+        qDebug() << pos;
+        qDebug() << localPos;
+        qDebug() << rect;
+        if(rect.contains(localPos)){
+            _nodeState.setDeleteIconPressed(true);
+            qDebug() << "Press Mouse:" << localPos;
+        }
 
         for (PortType portToCheck: {PortType::In, PortType::Out}) {
             QPointF nodeCoord = sceneTransform().inverted().map(event->scenePos());
@@ -216,6 +224,8 @@ namespace QtNodes {
         if (isSelected()) {
             Q_EMIT nodeScene()->nodeSelected(_nodeId);
         }
+
+        update();
     }
 
     void NodeGraphicsObject::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
@@ -227,6 +237,14 @@ namespace QtNodes {
                 scene()->clearSelection();
 
             setSelected(true);
+        }
+
+        QPointF localPos = event->scenePos();
+        localPos = mapFromScene(localPos);
+
+        if(_nodeState.getDeleteIconPressed()){
+            qDebug() << "Mouse move disabled..." << localPos;
+            return;
         }
 
         if (_nodeState.resizing()) {
@@ -265,10 +283,31 @@ namespace QtNodes {
         r = r.united(mapToScene(boundingRect()).boundingRect());
 
         nodeScene()->setSceneRect(r);
+
+        update();
     }
 
     void NodeGraphicsObject::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
         _nodeState.setResizing(false);
+
+        QPointF localPos = event->scenePos();
+        localPos = mapFromScene(localPos);
+        AbstractNodeGeometry &geometry = nodeScene()->nodeGeometry();
+
+        auto pos = geometry.deleteIconPosition(_nodeId);
+        QRectF rect{pos.x(),pos.y(),geometry.deleteIconRect(_nodeId).width(),
+                    geometry.deleteIconRect(_nodeId).height()};
+        if(rect.contains(localPos)
+        && _nodeState.getDeleteIconPressed()){
+            QMessageBox msg;
+            msg.setText("Hello World!");
+            msg.exec();
+        }
+
+        _nodeState.setDeleteIconPressed(false);
+        qDebug() << "Release Mouse:" << localPos;
+
+        update();
 
         QGraphicsObject::mouseReleaseEvent(event);
 
@@ -305,6 +344,10 @@ namespace QtNodes {
 
         setZValue(0.0);
 
+        QPointF localPos = event->scenePos();
+        localPos = mapFromScene(localPos);
+        _nodeState.setDeleteIconHovered(false);
+
         update();
 
         Q_EMIT nodeScene()->nodeHoverLeft(_nodeId);
@@ -313,17 +356,33 @@ namespace QtNodes {
     }
 
     void NodeGraphicsObject::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
-        auto pos = event->pos();
+        auto _pos = event->pos();
 
-        //NodeGeometry geometry(_nodeId, _graphModel, nodeScene());
         AbstractNodeGeometry &geometry = nodeScene()->nodeGeometry();
 
+        QPointF localPos = event->scenePos();
+        localPos = mapFromScene(localPos);
+        localPos = mapFromScene(localPos);
+        auto pos = geometry.deleteIconPosition(_nodeId);
+        QRectF rect{pos.x(),pos.y(),geometry.deleteIconRect(_nodeId).width(),
+                    geometry.deleteIconRect(_nodeId).height()};
+
+        if(rect.contains(localPos)){
+            _nodeState.setDeleteIconHovered(true);
+            qDebug()<<"Is hovered";
+        }else{
+            _nodeState.setDeleteIconHovered(false);
+            qDebug()<<"Is not hovered";
+        }
+
         if ((_graphModel.nodeFlags(_nodeId) | NodeFlag::Resizable)
-            && geometry.resizeHandleRect(_nodeId).contains(QPoint(pos.x(), pos.y()))) {
+            && geometry.resizeHandleRect(_nodeId).contains(QPoint(_pos.x(), _pos.y()))) {
             setCursor(QCursor(Qt::SizeFDiagCursor));
         } else {
             setCursor(QCursor());
         }
+
+        update();
 
         event->accept();
     }

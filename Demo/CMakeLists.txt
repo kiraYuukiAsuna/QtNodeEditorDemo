@@ -27,7 +27,9 @@ set(PROJECT_SOURCES
         PerformanceDelegateModel.cpp
         ConditionDelegateModel.cpp
         DefaultNodeData.cpp
-        )
+        ConnectionCondiationPopupWindow.cpp
+        ConnectionCondiationPopupWindow.h
+)
 
 add_executable(Demo ${PROJECTS_HEADERS} ${PROJECT_SOURCES})
 

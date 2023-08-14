@@ -7,7 +7,7 @@
 #include <QAction>
 #include <QScreen>
 #include <QtWidgets/QApplication>
-
+#include "QtNodes/internal/CustomNodePainter.h"
 #include "FunctionDelegateModel.h"
 #include "PerformanceDelegateModel.h"
 #include "ConditionDelegateModel.h"
@@ -41,6 +41,10 @@ int main(int argc, char *argv[]) {
     }
 
     auto scene = new QtNodes::DataFlowGraphicsScene(graphModel);
+
+    auto newPainter = std::make_unique<QtNodes::CustomNodePainter>();
+
+    scene->setNodePainter(std::move(newPainter));
 
     QtNodes::GraphicsView view(scene);
 

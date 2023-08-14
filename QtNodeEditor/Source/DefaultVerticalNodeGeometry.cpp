@@ -236,12 +236,7 @@ namespace QtNodes {
 
                 name = portData.name;
             }
-
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
             width = std::max(unsigned(_fontMetrics.horizontalAdvance(name)), width);
-#else
-            width = std::max(unsigned(_fontMetrics.width(name)), width);
-#endif
         }
 
         return width;

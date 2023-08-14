@@ -22,7 +22,7 @@
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QtGlobal>
-
+#include "CustomNodeGeometry.hpp"
 #include <iostream>
 #include <stdexcept>
 #include <unordered_set>
@@ -33,7 +33,7 @@ namespace QtNodes {
 
     BasicGraphicsScene::BasicGraphicsScene(AbstractGraphModel &graphModel, QObject *parent)
             : QGraphicsScene(parent), _graphModel(graphModel),
-              _nodeGeometry(std::make_unique<DefaultHorizontalNodeGeometry>(_graphModel)),
+              _nodeGeometry(std::make_unique<CustomNodeGeometry>(_graphModel)),
               _nodePainter(std::make_unique<DefaultNodePainter>()), _nodeDrag(false), _undoStack(new QUndoStack(this)),
               _orientation(Qt::Horizontal) {
         setItemIndexMethod(QGraphicsScene::NoIndex);

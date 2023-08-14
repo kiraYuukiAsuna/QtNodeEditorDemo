@@ -38,8 +38,28 @@ namespace QtNodes {
 
         void resetConnectionForReaction();
 
+        void setDeleteIconPressed(bool pressed){
+            _deleteIconPressed = pressed;
+        }
+
+        bool getDeleteIconPressed(){
+            return _deleteIconPressed;
+        }
+
+        void setDeleteIconHovered(bool hovered){
+            _deleteIconHovered = hovered;
+        }
+
+        bool getIsDeleteIconHovered(){
+            return _deleteIconHovered;
+        }
+
     private:
         NodeGraphicsObject &_ngo;
+
+        bool _deleteIconPressed;
+
+        bool _deleteIconHovered;
 
         bool _hovered;
 

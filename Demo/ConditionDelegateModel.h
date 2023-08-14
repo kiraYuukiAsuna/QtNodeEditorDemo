@@ -95,7 +95,7 @@ public:
         return m_CheckBox;
     }
 
-    virtual bool resizable() const { return true; }
+    virtual bool resizable() const { return false; }
 
 
     // slots

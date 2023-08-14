@@ -72,6 +72,10 @@ namespace QtNodes {
 
         virtual QRect resizeHandleRect(NodeId const nodeId) const = 0;
 
+        virtual QPointF deleteIconPosition(NodeId const nodeId) const {return {0,0};};
+
+        virtual QRectF deleteIconRect(NodeId const nodeId) const {return {0,0,0,0};};
+
     protected:
         AbstractGraphModel &_graphModel;
     };

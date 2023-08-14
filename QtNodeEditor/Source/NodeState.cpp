@@ -6,7 +6,7 @@
 namespace QtNodes {
 
     NodeState::NodeState(NodeGraphicsObject &ngo)
-            : _ngo(ngo), _hovered(false), _resizing(false), _connectionForReaction{nullptr} {
+            : _ngo(ngo), _hovered(false), _deleteIconPressed(false), _resizing(false), _deleteIconHovered(false), _connectionForReaction{nullptr} {
         Q_UNUSED(_ngo);
     }
 

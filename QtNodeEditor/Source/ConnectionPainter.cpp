@@ -212,21 +212,21 @@ namespace QtNodes {
                 if(cgo->connectionState().isConnectionWidgetPressed()){
                     iconPath = ":/image/setting-fill.png";
                     backgroundColor = QColor{0x92ACFF};
-                    shrinkRatio = 0.9;
+                    shrinkRatio = 0.8;
                 }else if(cgo->connectionState().isConnectionWidgetHovered()){
                     iconPath = ":/image/setting-fill.png";
                     backgroundColor = QColor{0xCBEDFF};
-                    shrinkRatio = 1.1;
+                    shrinkRatio = 1.0;
                 }else{
                     iconPath = ":/image/setting-filling.png";
-                    backgroundColor = QColor{0xFFFFFF};
-                    shrinkRatio = 1.0;
+                    backgroundColor = QColor{0xAEEDFF};
+                    shrinkRatio = 0.8;
                 }
 
                 QPixmap originalPixmap(iconPath);
                 QPixmap pixmap = originalPixmap.scaled(QSize(cgo->getConnectionGeometry().getShrinkIconSize(shrinkRatio).width(),
                                                              cgo->getConnectionGeometry().getShrinkIconSize(shrinkRatio).height()));
-                qDebug() << cgo->getConnectionGeometry().getShrinkConditionWidgetRect(shrinkRatio);
+
                 p.setColor(backgroundColor);
                 painter->setBrush(backgroundColor);
                 painter->setPen(p);
