@@ -28,7 +28,12 @@ namespace QtNodes {
 
         void save() const;
 
+        QByteArray saveFromMemory();
+
         void load();
+
+        void loadFromMemory(const QByteArray& jsonArray);
+
 
     Q_SIGNALS:
 

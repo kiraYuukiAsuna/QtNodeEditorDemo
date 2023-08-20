@@ -423,7 +423,15 @@ namespace QtNodes {
 
         QJsonArray connJsonArray;
         for (auto const &cid: _connectivity) {
-            connJsonArray.append(toJson(cid));
+            auto connectionJsonObject = toJson(cid);
+
+            // TODO: save from connection graphics object
+            QJsonObject conditionDataJsonObject;
+            conditionDataJsonObject["cpu"] = "60.0";
+            conditionDataJsonObject["Network IO"] = "50.0";
+            connectionJsonObject["condition-data"] = conditionDataJsonObject;
+
+            connJsonArray.append(connectionJsonObject);
         }
         sceneJson["connections"] = connJsonArray;
 
@@ -482,6 +490,11 @@ namespace QtNodes {
 
         for (QJsonValueRef connection: connectionJsonArray) {
             QJsonObject connJson = connection.toObject();
+
+            // TODO: read to connection graphics object
+            QJsonObject conditionDataJsonObject = connJson["condition-data"].toObject();
+            conditionDataJsonObject["cpu"] = "60.0";
+            conditionDataJsonObject["Network IO"] = "50.0";
 
             ConnectionId connId = fromJson(connJson);
 

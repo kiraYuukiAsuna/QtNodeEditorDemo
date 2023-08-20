@@ -180,4 +180,16 @@ namespace QtNodes {
         Q_EMIT sceneLoaded();
     }
 
+    QByteArray DataFlowGraphicsScene::saveFromMemory() {
+        return QJsonDocument(_graphModel.save()).toJson();
+    }
+
+    void DataFlowGraphicsScene::loadFromMemory(const QByteArray& jsonArray) {
+        clearScene();
+
+        _graphModel.load(QJsonDocument::fromJson(jsonArray).object());
+
+        Q_EMIT sceneLoaded();
+    }
+
 } // namespace QtNodes

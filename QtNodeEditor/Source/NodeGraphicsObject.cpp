@@ -300,7 +300,7 @@ namespace QtNodes {
         if(rect.contains(localPos)
         && _nodeState.getDeleteIconPressed()){
             QMessageBox msg;
-            msg.setText("Hello World!");
+            msg.setText("Are your sure to delete this node?");
             msg.exec();
         }
 
@@ -361,7 +361,6 @@ namespace QtNodes {
         AbstractNodeGeometry &geometry = nodeScene()->nodeGeometry();
 
         QPointF localPos = event->scenePos();
-        localPos = mapFromScene(localPos);
         localPos = mapFromScene(localPos);
         auto pos = geometry.deleteIconPosition(_nodeId);
         QRectF rect{pos.x(),pos.y(),geometry.deleteIconRect(_nodeId).width(),

@@ -69,6 +69,7 @@ set(CPP_SOURCE_FILES
         Source/ConnectionGeometry.cpp
         Source/CustomNodePainter.cpp
         Source/CustomNodeGeometry.cpp
+        Source/ConnectionPopupWindow.cpp
 )
 
 set(HPP_HEADER_FILES
@@ -108,7 +109,9 @@ set(HPP_HEADER_FILES
         Source/UndoCommands.hpp
         Source/ConnectionGeometry.hpp
         Include/QtNodes/internal/CustomNodePainter.h
-        Source/CustomNodeGeometry.hpp)
+        Source/CustomNodeGeometry.hpp
+        Source/ConnectionPopupWindow.h
+)
 
 add_library(QtNodes
         ${CPP_SOURCE_FILES}

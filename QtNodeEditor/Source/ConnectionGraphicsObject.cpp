@@ -11,6 +11,7 @@
 #include "NodeGraphicsObject.hpp"
 #include "StyleCollection.hpp"
 #include "locateNode.hpp"
+#include "ConnectionPopupWindow.h"
 
 #include <QtWidgets/QGraphicsBlurEffect>
 #include <QtWidgets/QGraphicsDropShadowEffect>
@@ -21,6 +22,7 @@
 
 #include <stdexcept>
 #include <QMessageBox>
+
 namespace QtNodes {
 
     ConnectionGraphicsObject::ConnectionGraphicsObject(BasicGraphicsScene &scene,
@@ -241,9 +243,12 @@ namespace QtNodes {
         QPointF localPos = event->pos();
 
         if(m_ConnectionGeometry.getConditionWidgetRect().contains(localPos) && _connectionState.isConnectionWidgetPressed()){
-            QMessageBox msg;
-            msg.setText("Hello World!");
-            msg.exec();
+            auto* graphicsView = static_cast<QGraphicsView *>(event->widget());
+
+            Q_ASSERT(graphicsView);
+
+            ConnectionPopupWindow view{_connectionId, m_ConditionValue,nullptr};
+            view.exec();
         }
 
         _connectionState.setConnectionWidgetPressed(false);

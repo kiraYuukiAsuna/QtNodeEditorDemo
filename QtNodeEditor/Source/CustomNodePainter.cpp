@@ -17,9 +17,8 @@
 namespace QtNodes {
 
     void CustomNodePainter::paint(QPainter *painter, NodeGraphicsObject &ngo) const {
-        // TODO?
-        //AbstractNodeGeometry & geometry = ngo.nodeScene()->nodeGeometry();
-        //geometry.recomputeSizeIfFontChanged(painter->font());
+        AbstractNodeGeometry & geometry = ngo.nodeScene()->nodeGeometry();
+        geometry.recomputeSize(ngo.nodeId());
 
         drawNodeRect(painter, ngo);
 
@@ -39,43 +38,6 @@ namespace QtNodes {
     }
 
     void CustomNodePainter::drawNodeRect(QPainter *painter, NodeGraphicsObject &ngo) const {
-//        AbstractGraphModel &model = ngo.graphModel();
-//
-//        NodeId const nodeId = ngo.nodeId();
-//
-//        AbstractNodeGeometry &geometry = ngo.nodeScene()->nodeGeometry();
-//
-//        QSize size = geometry.size(nodeId);
-//
-//        QJsonDocument json = QJsonDocument::fromVariant(model.nodeData(nodeId, NodeRole::Style));
-//
-//        NodeStyle nodeStyle(json.object());
-//
-//        auto color = ngo.isSelected() ? nodeStyle.SelectedBoundaryColor : nodeStyle.NormalBoundaryColor;
-//
-//        if (ngo.nodeState().hovered()) {
-//            QPen p(color, nodeStyle.HoveredPenWidth);
-//            painter->setPen(p);
-//        } else {
-//            QPen p(color, nodeStyle.PenWidth);
-//            painter->setPen(p);
-//        }
-//
-//        QLinearGradient gradient(QPointF(0.0, 0.0), QPointF(2.0, size.height()));
-//
-//        gradient.setColorAt(0.0, nodeStyle.GradientColor0);
-//        gradient.setColorAt(0.10, nodeStyle.GradientColor1);
-//        gradient.setColorAt(0.90, nodeStyle.GradientColor2);
-//        gradient.setColorAt(1.0, nodeStyle.GradientColor3);
-//
-//        painter->setBrush(gradient);
-//
-//        QRectF boundary(0, 0, size.width(), size.height());
-//
-//        double const radius = 3.0;
-//
-//        painter->drawRoundedRect(boundary, radius, radius);
-        // ------------------ //
         AbstractGraphModel &model = ngo.graphModel();
 
         NodeId const nodeId = ngo.nodeId();
@@ -112,8 +74,8 @@ namespace QtNodes {
 
         QRectF boundary(0, 0, geom.m_Width, geom.m_Height);
 
-        double const xRadius = 5.0;
-        double const yRadius = 5.0;
+        double const xRadius = 6.0;
+        double const yRadius = 6.0;
 
         painter->drawRoundedRect(boundary, xRadius, yRadius);
     }
@@ -520,15 +482,15 @@ namespace QtNodes {
         float shrinkRatio = 1.0;
 
         if(ngo.nodeState().getDeleteIconPressed()){
-            iconPath = ":/image/setting-fill.png";
+            iconPath = ":/image/delete.png";
             backgroundColor = QColor{0x92ACFF};
             shrinkRatio = 0.7;
         }else if(ngo.nodeState().getIsDeleteIconHovered()){
-            iconPath = ":/image/setting-fill.png";
+            iconPath = ":/image/delete.png";
             backgroundColor = QColor{0xCBEDFF};
             shrinkRatio = 0.9;
         }else{
-            iconPath = ":/image/setting-filling.png";
+            iconPath = ":/image/delete.png";
             backgroundColor = QColor{0xFFFFFF};
             shrinkRatio = 0.7;
         }

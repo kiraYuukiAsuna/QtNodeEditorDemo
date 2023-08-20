@@ -211,15 +211,15 @@ namespace QtNodes {
                 float shrinkRatio = 1.0;
                 if(cgo->connectionState().isConnectionWidgetPressed()){
                     iconPath = ":/image/setting-fill.png";
-                    backgroundColor = QColor{0x92ACFF};
+                    backgroundColor = QColor{0xF0F0F0};
                     shrinkRatio = 0.8;
                 }else if(cgo->connectionState().isConnectionWidgetHovered()){
                     iconPath = ":/image/setting-fill.png";
-                    backgroundColor = QColor{0xCBEDFF};
+                    backgroundColor = QColor{0xF0F0F0};
                     shrinkRatio = 1.0;
                 }else{
                     iconPath = ":/image/setting-filling.png";
-                    backgroundColor = QColor{0xAEEDFF};
+                    backgroundColor = QColor{0xF0F0F0};
                     shrinkRatio = 0.8;
                 }
 
@@ -230,7 +230,8 @@ namespace QtNodes {
                 p.setColor(backgroundColor);
                 painter->setBrush(backgroundColor);
                 painter->setPen(p);
-                painter->drawRoundedRect(cgo->getConnectionGeometry().getShrinkConditionWidgetRect(shrinkRatio), 3.0, 3.0);
+                painter->drawEllipse(cgo->getConnectionGeometry().getShrinkIconPosition(shrinkRatio) + QPointF{cgo->getConnectionGeometry().getShrinkConditionWidgetRect(shrinkRatio).width()/2,cgo->getConnectionGeometry().getShrinkConditionWidgetRect(shrinkRatio).height()/2}
+                                     , cgo->getConnectionGeometry().getShrinkConditionWidgetRect(shrinkRatio).width()/2, cgo->getConnectionGeometry().getShrinkConditionWidgetRect(shrinkRatio).height()/2);
                 painter->drawPixmap(cgo->getConnectionGeometry().getShrinkIconPosition(shrinkRatio), pixmap);
             }
         } else {

@@ -27,36 +27,6 @@ namespace QtNodes {
     }
 
     void CustomNodeGeometry::recomputeSize(NodeId const nodeId) const {
-//        unsigned int height = maxVerticalPortsExtent(nodeId);
-//
-//        if (auto w = _graphModel.nodeData<QWidget *>(nodeId, NodeRole::Widget)) {
-//            height = std::max(height, static_cast<unsigned int>(w->height()));
-//        }
-//
-//        QRectF const capRect = captionRect(nodeId);
-//
-//        height += capRect.height();
-//
-//        height += _portSpasing; // space above caption
-//        height += _portSpasing; // space below caption
-//
-//        unsigned int inPortWidth = maxPortsTextAdvance(nodeId, PortType::In);
-//        unsigned int outPortWidth = maxPortsTextAdvance(nodeId, PortType::Out);
-//
-//        unsigned int width = inPortWidth + outPortWidth + 4 * _portSpasing;
-//
-//        if (auto w = _graphModel.nodeData<QWidget *>(nodeId, NodeRole::Widget)) {
-//            width += w->width();
-//        }
-//
-//        width = std::max(width, static_cast<unsigned int>(capRect.width()) + 2 * _portSpasing);
-//
-//        QSize size(width, height);
-//
-//        _graphModel.setNodeData(nodeId, NodeRole::Size, size);
-
-        // ----------------------------- //
-
         // titlebar area
         QRectF const titleBarTextBoundingRect = captionRect(nodeId);
         m_TitleBarWidth = titleBarTextBoundingRect.width();
@@ -186,7 +156,7 @@ namespace QtNodes {
         QSize size = _graphModel.nodeData<QSize>(nodeId, NodeRole::Size);
 //        return QPointF(0.5 * (size.width() - captionRect(nodeId).width() - 64) + 32,
 //                       (float)2/3 * std::max({(int)captionRect(nodeId).height(), 32}));
-        return QPointF(32 + 3,
+        return QPointF(32 + 12,
                        (float)2/3 * std::max({(int)captionRect(nodeId).height(), 32}));
     }
 

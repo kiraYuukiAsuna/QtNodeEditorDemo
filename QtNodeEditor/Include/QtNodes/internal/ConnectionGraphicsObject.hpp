@@ -95,6 +95,8 @@ class ConnectionGraphicsObject : public QGraphicsObject {
 
         ConnectionState _connectionState;
 
+        QVariant m_ConditionValue;
+
         ConnectionGeometry m_ConnectionGeometry;
 
         mutable QPointF _out;
