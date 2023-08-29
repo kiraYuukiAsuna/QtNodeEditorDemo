@@ -5,6 +5,8 @@ project(Demo)
 set(CMAKE_CXX_STANDARD 20)
 
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets Gui OpenGL)
@@ -29,6 +31,10 @@ set(PROJECT_SOURCES
         DefaultNodeData.cpp
         ConnectionCondiationPopupWindow.cpp
         ConnectionCondiationPopupWindow.h
+        PerformanceJobInternalWidget.h
+        PerformanceJobInternalWidget.cpp
+        FunctionJobInternalWidget.h
+        FunctionJobInternalWidget.cpp
 )
 
 add_executable(Demo ${PROJECTS_HEADERS} ${PROJECT_SOURCES})

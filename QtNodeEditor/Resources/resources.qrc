@@ -5,5 +5,9 @@
         <file>image/setting-filling.png</file>
         <file>image/setting-fill.png</file>
         <file>image/delete.png</file>
+        <file>image/expand.png</file>
+        <file>image/collapse.png</file>
+        <file>image/edit.png</file>
+
     </qresource>
 </RCC>

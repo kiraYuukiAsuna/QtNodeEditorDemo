@@ -247,7 +247,7 @@ namespace QtNodes {
 
             Q_ASSERT(graphicsView);
 
-            ConnectionPopupWindow view{_connectionId, m_ConditionValue,nullptr};
+            ConnectionPopupWindow view{nullptr};
             view.exec();
         }
 

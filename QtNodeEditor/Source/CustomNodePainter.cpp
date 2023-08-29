@@ -301,7 +301,7 @@ namespace QtNodes {
                         std::max({32, geom.m_TitleBarHeight}));
         QColor backgroundColor = Qt::transparent;
         painter->setBrush(backgroundColor);
-//        painter->drawRoundedRect(boundary, xRadius, yRadius);
+        painter->drawRoundedRect(boundary, xRadius, yRadius);
 
         painter->setPen(nodeStyle.FontColor);
 
@@ -414,7 +414,7 @@ namespace QtNodes {
 
         QString iconPath = ":/image/conditions.png";
         QColor backgroundColor = QColor(0xAEEDFF);
-        float shrinkRatio = 1.0;
+        float shrinkRatio = 0.8;
 //        if(ngo->connectionState().isConnectionWidgetPressed()){
 //            iconPath = ":/image/setting-fill.png";
 //            backgroundColor = QColor{0x92ACFF};
@@ -436,7 +436,7 @@ namespace QtNodes {
         painter->setBrush(backgroundColor);
         painter->setPen(p);
 //        painter->drawRoundedRect(boundary, xRadius, yRadius);
-        painter->drawPixmap(QPointF(0, 0), pixmap);
+        painter->drawPixmap(QPointF(32*(1-shrinkRatio), 32*(1-shrinkRatio)), pixmap);
     }
 
     void CustomNodePainter::drawNodeRightIcon(QPainter *painter, NodeGraphicsObject &ngo) const {

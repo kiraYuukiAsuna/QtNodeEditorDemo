@@ -302,6 +302,8 @@ namespace QtNodes {
             QMessageBox msg;
             msg.setText("Are your sure to delete this node?");
             msg.exec();
+//            _graphModel.deleteNode(_nodeId);
+
         }
 
         _nodeState.setDeleteIconPressed(false);
@@ -376,7 +378,8 @@ namespace QtNodes {
 
         if ((_graphModel.nodeFlags(_nodeId) | NodeFlag::Resizable)
             && geometry.resizeHandleRect(_nodeId).contains(QPoint(_pos.x(), _pos.y()))) {
-            setCursor(QCursor(Qt::SizeFDiagCursor));
+//            setCursor(QCursor(Qt::SizeFDiagCursor));
+            setCursor(QCursor());
         } else {
             setCursor(QCursor());
         }

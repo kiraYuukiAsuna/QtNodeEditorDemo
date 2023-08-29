@@ -3,6 +3,7 @@
 #include <QLineEdit>
 #include "QtNodes/NodeDelegateModel"
 #include "DefaultNodeData.h"
+#include "PerformanceJobInternalWidget.h"
 
 class PerformanceDelegateModel : public QtNodes::NodeDelegateModel  {
 Q_OBJECT
@@ -87,12 +88,19 @@ public:
     }
 
     virtual QWidget *embeddedWidget() override{
-        if (!m_LineEdit) {
-            m_LineEdit = new QLineEdit();
-            m_LineEdit->setText("Performance LineEdit Created!");
+        if (!m_InternalWidget) {
+            m_InternalWidget = new PerformanceJobInternalWidget(nullptr);
+
+            PerformanceJobCollectionInfoList list;
+
+            for (int i = 0; i < 10; ++i) {
+                list.push_back({"TestData" + std::to_string(i), i%2 == 1});
+            }
+
+            m_InternalWidget->updateCollection(list);
         }
 
-        return m_LineEdit;
+        return m_InternalWidget;
     }
 
     virtual bool resizable() const { return false; }
@@ -143,5 +151,5 @@ public:
 //    void portsInserted();
 
 private:
-    QLineEdit* m_LineEdit = nullptr;
+    PerformanceJobInternalWidget* m_InternalWidget = nullptr;
 };

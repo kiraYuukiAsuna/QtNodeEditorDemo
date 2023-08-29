@@ -38,6 +38,8 @@ endif ()
 # Unfortunately, as we have a split Include/QtNodes/Source, AUTOMOC doesn't work.
 # We'll have to manually specify some files
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
 
 include_directories(Include)
 
@@ -70,6 +72,9 @@ set(CPP_SOURCE_FILES
         Source/CustomNodePainter.cpp
         Source/CustomNodeGeometry.cpp
         Source/ConnectionPopupWindow.cpp
+        Source/ConnectionPopupWindow.ui
+
+
 )
 
 set(HPP_HEADER_FILES
@@ -111,6 +116,8 @@ set(HPP_HEADER_FILES
         Include/QtNodes/internal/CustomNodePainter.h
         Source/CustomNodeGeometry.hpp
         Source/ConnectionPopupWindow.h
+
+
 )
 
 add_library(QtNodes
