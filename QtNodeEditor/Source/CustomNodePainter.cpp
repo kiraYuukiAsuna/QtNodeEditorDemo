@@ -412,8 +412,17 @@ namespace QtNodes {
                         32,
                         32);
 
-        QString iconPath = ":/image/conditions.png";
-        QColor backgroundColor = QColor(0xAEEDFF);
+
+        QString type = model.nodeData(nodeId, NodeRole::Type).value<QString>();
+
+        QString iconPath;
+        if(type == "FunctionDelegateModel"){
+            iconPath = ":/image/function.png";
+        }else if(type == "PerformanceDelegateModel"){
+            iconPath = ":/image/performance.png";
+        }
+
+        auto backgroundColor = QColor(0xAEEDFF);
         float shrinkRatio = 0.8;
 //        if(ngo->connectionState().isConnectionWidgetPressed()){
 //            iconPath = ":/image/setting-fill.png";
@@ -436,7 +445,7 @@ namespace QtNodes {
         painter->setBrush(backgroundColor);
         painter->setPen(p);
 //        painter->drawRoundedRect(boundary, xRadius, yRadius);
-        painter->drawPixmap(QPointF(32*(1-shrinkRatio), 32*(1-shrinkRatio)), pixmap);
+        painter->drawPixmap(QPointF(32*(1-shrinkRatio)/2, 32*(1-shrinkRatio))/2, pixmap);
     }
 
     void CustomNodePainter::drawNodeRightIcon(QPainter *painter, NodeGraphicsObject &ngo) const {

@@ -210,7 +210,9 @@ int main(int argc, char *argv[]) {
 
     QtNodes::DataFlowGraphModel graphModel(registerDataModels());
 
-    // Initialize and connect two nodes.
+    auto scene = new QtNodes::DataFlowGraphicsScene(graphModel);
+
+    // Initialize and connect two nodes. must after scene and model created!
     {
         QtNodes::NodeId id1 = graphModel.addNode("FunctionDelegateModel");
         graphModel.setNodeData(id1, QtNodes::NodeRole::Position, QPointF(0, 0));
@@ -220,8 +222,6 @@ int main(int argc, char *argv[]) {
 
         graphModel.addConnection(QtNodes::ConnectionId{id1, 0, id2, 0}, QJsonObject{});
     }
-
-    auto scene = new QtNodes::DataFlowGraphicsScene(graphModel);
 
     auto newPainter = std::make_unique<QtNodes::CustomNodePainter>();
 

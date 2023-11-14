@@ -8,6 +8,8 @@
         <file>image/expand.png</file>
         <file>image/collapse.png</file>
         <file>image/edit.png</file>
+        <file>image/function.png</file>
+        <file>image/performance.png</file>
 
     </qresource>
 </RCC>

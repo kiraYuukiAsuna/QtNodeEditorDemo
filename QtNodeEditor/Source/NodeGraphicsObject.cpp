@@ -301,9 +301,10 @@ namespace QtNodes {
         && _nodeState.getDeleteIconPressed()){
             QMessageBox msg;
             msg.setText("Are your sure to delete this node?");
-            msg.exec();
-//            _graphModel.deleteNode(_nodeId);
+            if(msg.exec() == QMessageBox::AcceptRole){
 
+            }
+            _graphModel.postDeleteRequest(_nodeId);
         }
 
         _nodeState.setDeleteIconPressed(false);

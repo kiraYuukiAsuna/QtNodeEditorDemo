@@ -8,6 +8,7 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QObject>
 #include <QtCore/QVariant>
+#include <QTimer>
 
 #include "ConnectionIdHash.hpp"
 #include "Definitions.hpp"
@@ -249,9 +250,20 @@ namespace QtNodes {
 
         void modelReset();
 
+    public:
+        void postDeleteRequest(NodeId const nodeId){
+            m_DeleteTimer.setInterval(500);
+            connect(&m_DeleteTimer, &QTimer::timeout, this, [nodeId,this](){
+                this->deleteNode(nodeId);
+                m_DeleteTimer.stop();
+            });
+            m_DeleteTimer.start();
+        }
+
     private:
         std::vector<ConnectionId> _shiftedByDynamicPortsConnections;
         BasicGraphicsScene* m_Scene;
+        QTimer m_DeleteTimer;
     };
 
 } // namespace QtNodes
