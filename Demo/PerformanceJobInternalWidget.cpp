@@ -2,5 +2,5 @@
 #include "PerformanceDelegateModel.h"
 
 void PerformanceJobInternalWidget::requstReCalcSize() {
-//    emit m_DelegateModel->embeddedWidgetSizeUpdated();
+    emit m_DelegateModel->embeddedWidgetSizeUpdated();
 }

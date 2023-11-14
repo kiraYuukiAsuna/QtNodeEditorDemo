@@ -3,6 +3,7 @@
 #include <utility>
 
 #include <QtCore/QUuid>
+#include <QJsonObject>
 #include <QtWidgets/QGraphicsObject>
 #include "ConnectionGeometry.hpp"
 #include "ConnectionState.hpp"
@@ -28,7 +29,7 @@ class ConnectionGraphicsObject : public QGraphicsObject {
         int type() const override { return Type; }
 
     public:
-        ConnectionGraphicsObject(BasicGraphicsScene &scene, ConnectionId const connectionId);
+        ConnectionGraphicsObject(BasicGraphicsScene &scene, ConnectionId const connectionId, QJsonObject conditionDataJsonObject);
 
         ~ConnectionGraphicsObject() = default;
 
@@ -64,6 +65,14 @@ class ConnectionGraphicsObject : public QGraphicsObject {
             return m_ConnectionGeometry;
         }
 
+        QJsonObject getConditionDataJsonObject(){
+            return m_ConditionDataJsonObject;
+        }
+
+        void setConditionDataJsonObject(QJsonObject conditionDataJsonObject){
+            m_ConditionDataJsonObject = conditionDataJsonObject;
+        }
+
     protected:
         void paint(QPainter *painter,
                    QStyleOptionGraphicsItem const *option,
@@ -95,7 +104,7 @@ class ConnectionGraphicsObject : public QGraphicsObject {
 
         ConnectionState _connectionState;
 
-        QVariant m_ConditionValue;
+        QJsonObject m_ConditionDataJsonObject;
 
         ConnectionGeometry m_ConnectionGeometry;
 

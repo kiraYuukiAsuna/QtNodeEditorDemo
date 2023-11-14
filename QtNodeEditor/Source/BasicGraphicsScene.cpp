@@ -38,6 +38,8 @@ namespace QtNodes {
               _orientation(Qt::Horizontal) {
         setItemIndexMethod(QGraphicsScene::NoIndex);
 
+        _graphModel.setBasicGraphicsScene(this);
+
         connect(&_graphModel,
                 &AbstractGraphModel::connectionCreated,
                 this,
@@ -103,7 +105,7 @@ namespace QtNodes {
 
     std::unique_ptr<ConnectionGraphicsObject> const &BasicGraphicsScene::makeDraftConnection(
             ConnectionId const incompleteConnectionId) {
-        _draftConnection = std::make_unique<ConnectionGraphicsObject>(*this, incompleteConnectionId);
+        _draftConnection = std::make_unique<ConnectionGraphicsObject>(*this, incompleteConnectionId, QJsonObject{});
 
         _draftConnection->grabMouse();
 
@@ -182,7 +184,7 @@ namespace QtNodes {
 
                 for (auto cid: outConnectionIds) {
                     _connectionGraphicsObjects[cid] = std::make_unique<ConnectionGraphicsObject>(*this,
-                                                                                                 cid);
+                                                                                                 cid, QJsonObject{});
                 }
             }
         }
@@ -212,9 +214,9 @@ namespace QtNodes {
         updateAttachedNodes(connectionId, PortType::In);
     }
 
-    void BasicGraphicsScene::onConnectionCreated(ConnectionId const connectionId) {
+    void BasicGraphicsScene::onConnectionCreated(ConnectionId const connectionId, QJsonObject conditionDataJsonObject) {
         _connectionGraphicsObjects[connectionId]
-                = std::make_unique<ConnectionGraphicsObject>(*this, connectionId);
+                = std::make_unique<ConnectionGraphicsObject>(*this, connectionId, conditionDataJsonObject);
 
         updateAttachedNodes(connectionId, PortType::Out);
         updateAttachedNodes(connectionId, PortType::In);

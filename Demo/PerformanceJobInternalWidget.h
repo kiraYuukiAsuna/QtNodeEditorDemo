@@ -9,7 +9,9 @@
 #include "ImageDefs.h"
 #include <vector>
 #include <QToolButton>
-
+#include <QGroupBox>
+#include "CustomSelectWindow.h"
+#include <QDebug>
 
 struct PerformanceJobCollectionInfo{
     std::string name;
@@ -18,16 +20,16 @@ struct PerformanceJobCollectionInfo{
 
 using PerformanceJobCollectionInfoList = std::vector<PerformanceJobCollectionInfo>;
 
-enum class NodeType : int32_t {
+enum class PerformanceNodeType : int32_t {
     eNode,
     eFolder
 };
 
-struct InternalTreeNodeData{
+struct PerformanceInternalTreeNodeData{
     int32_t id;
-    NodeType nodeType;
+    PerformanceNodeType nodeType;
 };
-Q_DECLARE_METATYPE(InternalTreeNodeData)
+Q_DECLARE_METATYPE(PerformanceInternalTreeNodeData)
 
 // forward decl
 class PerformanceDelegateModel;
@@ -38,22 +40,17 @@ class PerformanceJobInternalWidget : public QWidget {
 public:
     PerformanceJobInternalWidget(PerformanceDelegateModel* delegateModel, QWidget* parent= nullptr) : QWidget(parent) {
         m_DelegateModel = delegateModel;
-        m_ExpandStatus = false;
+
         this->setPalette(QPalette(QColor(0xffffff)));
 
         m_MainLayout = new QVBoxLayout(this);
-        m_PerformanceJobCollection = new QTreeWidget(this);
+
+        m_PerformanceJobView = new CustomSelectWidget({}, false, false, QIcon(ImageDefs::ImageEdit));
         m_ScriptsControlBtn = new QToolButton(this);
 
-        m_PerformanceJobCollection->setHeaderHidden(true);
-        m_PerformanceJobCollection->setColumnCount(1);
-        m_PerformanceJobCollection->setAnimated(true);
-        m_PerformanceJobCollection->setItemsExpandable(true);
-        m_PerformanceJobCollection->setFrameStyle(QFrame::NoFrame);
-        m_PerformanceJobCollection->setSortingEnabled(true);
-
         m_ScriptsControlBtn->setToolTip(tr("Expand"));
-
+        m_ExpandStatus = true;
+        m_PerformanceJobView->setVisible(m_ExpandStatus);
 
         {
             auto layout = new QHBoxLayout;
@@ -63,6 +60,7 @@ public:
 
             connect(m_ScriptsControlBtn, &QToolButton::clicked, this, [&](bool checked = false) {
                 m_ExpandStatus = !m_ExpandStatus;
+                m_PerformanceJobView->setVisible(m_ExpandStatus);
                 refreshView();
             });
 
@@ -73,23 +71,33 @@ public:
             scriptsTool_EditBtn->setToolButtonStyle(Qt::ToolButtonIconOnly);
             layout->addWidget(scriptsTool_EditBtn,222,Qt::AlignRight);
             connect(scriptsTool_EditBtn, &QToolButton::clicked, this, [&](bool checked = false) {
+
+                CustomSelectWindow dialog({}, true, false, QIcon(ImageDefs::ImageEdit));
+
+                for(auto& info : m_DataCache){
+                    dialog.getCustomSelectedWidget()->addPath(info.name,true,info.selected);
+                }
+
+                if (dialog.exec() == QDialog::Accepted) {
+                    std::vector<std::string> selectedPaths = dialog.getCustomSelectedWidget()->getSelectedPaths();
+
+                    for(auto& path : selectedPaths){
+                        for(auto& cache : m_DataCache) {
+                            if (path == cache.name){
+                                cache.selected = true;
+                            }
+                        }
+                    }
+
+                    refreshView();
+                }
+
             });
 
             m_MainLayout->addLayout(layout);
         }
 
-        {
-            m_PerformanceJobCollection->clear();
-
-            m_PerformanceJobCollection->setHeaderHidden(true);
-            m_PerformanceJobCollection->setColumnCount(1);
-            m_PerformanceJobCollection->setAnimated(true);
-            m_PerformanceJobCollection->setItemsExpandable(true);
-            m_PerformanceJobCollection->setFrameStyle(QFrame::NoFrame);
-            m_PerformanceJobCollection->setSortingEnabled(true);
-
-            m_MainLayout->addWidget(m_PerformanceJobCollection);
-        }
+        m_MainLayout->addWidget(m_PerformanceJobView);
 
         this->setLayout(m_MainLayout);
 
@@ -101,21 +109,20 @@ public:
         refreshView();
     }
 
+    PerformanceJobCollectionInfoList getCollection(){
+        return m_DataCache;
+    }
+
     void refreshView(){
-        m_PerformanceJobCollection->clear();
-        auto* topItem = new QTreeWidgetItem;
-        topItem->setText(0, "Info");
-        m_PerformanceJobCollection->addTopLevelItem(topItem);
+        std::vector<std::string> paths;
 
-        m_PerformanceJobCollection->setSortingEnabled(false);
-        auto count = m_PerformanceJobCollection->topLevelItemCount();
-        auto dataList(m_DataCache);
-
-        for (auto& info : m_DataCache) {
-            auto* item = new QTreeWidgetItem;
-            item->setText(0, QString::fromStdString(info.name));
-            topItem->addChild(item);
+        for(auto& info : m_DataCache){
+            if(info.selected){
+                paths.push_back(info.name);
+            }
         }
+
+        m_PerformanceJobView->clearAllAndUpdate(paths, false);
 
         if (!m_ExpandStatus) {
             m_ScriptsControlBtn->setIcon(QIcon(ImageDefs::ImageExpand));
@@ -124,7 +131,7 @@ public:
             m_ScriptsControlBtn->setIcon(QIcon(ImageDefs::ImageCollapse));
             m_ScriptsControlBtn->setToolTip(tr("Collapse"));
         }
-        topItem->setExpanded(m_ExpandStatus);
+
         qDebug()<<m_ExpandStatus;
         requstReCalcSize();
     }
@@ -133,7 +140,7 @@ public:
 
     private:
     QVBoxLayout* m_MainLayout;
-    QTreeWidget* m_PerformanceJobCollection;
+    CustomSelectWidget* m_PerformanceJobView;
     QToolButton* m_ScriptsControlBtn;
 
     PerformanceJobCollectionInfoList m_DataCache;

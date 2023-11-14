@@ -73,7 +73,7 @@ namespace QtNodes {
 
         _ngo.nodeScene()->resetDraftConnection();
 
-        _ngo.nodeScene()->undoStack().push(new ConnectCommand(_ngo.nodeScene(), newConnectionId));
+        _ngo.nodeScene()->undoStack().push(new ConnectCommand(_ngo.nodeScene(), newConnectionId, QJsonObject{}));
 
         return true;
     }
@@ -81,7 +81,7 @@ namespace QtNodes {
     bool NodeConnectionInteraction::disconnect(PortType portToDisconnect) const {
         ConnectionId connectionId = _cgo.connectionId();
 
-        _scene.undoStack().push(new DisconnectCommand(&_scene, connectionId));
+        _scene.undoStack().push(new DisconnectCommand(&_scene, connectionId, _cgo.getConditionDataJsonObject()));
 
         AbstractNodeGeometry &geometry = _scene.nodeGeometry();
 

@@ -43,7 +43,7 @@ namespace QtNodes {
 
         bool connectionPossible(ConnectionId const connectionId) const override;
 
-        void addConnection(ConnectionId const connectionId) override;
+        void addConnection(ConnectionId const connectionId, QJsonObject conditionDataJsonObject) override;
 
         bool nodeExists(NodeId const nodeId) const override;
 
@@ -98,7 +98,7 @@ namespace QtNodes {
     private:
         NodeId newNodeId() override { return _nextNodeId++; }
 
-        void sendConnectionCreation(ConnectionId const connectionId);
+        void sendConnectionCreation(ConnectionId const connectionId, QJsonObject conditionDataJsonObject);
 
         void sendConnectionDeletion(ConnectionId const connectionId);
 

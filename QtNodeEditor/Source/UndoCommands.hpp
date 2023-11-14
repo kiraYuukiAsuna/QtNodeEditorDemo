@@ -69,7 +69,7 @@ namespace QtNodes {
 
     class DisconnectCommand : public QUndoCommand {
     public:
-        DisconnectCommand(BasicGraphicsScene *scene, ConnectionId const);
+        DisconnectCommand(BasicGraphicsScene *scene, ConnectionId const, QJsonObject conditionDataJsonObject);
 
         void undo() override;
 
@@ -79,11 +79,13 @@ namespace QtNodes {
         BasicGraphicsScene *_scene;
 
         ConnectionId _connId;
+
+        QJsonObject m_ConditionDataJsonObject;
     };
 
     class ConnectCommand : public QUndoCommand {
     public:
-        ConnectCommand(BasicGraphicsScene *scene, ConnectionId const);
+        ConnectCommand(BasicGraphicsScene *scene, ConnectionId const, QJsonObject conditionDataJsonObject);
 
         void undo() override;
 
@@ -93,6 +95,8 @@ namespace QtNodes {
         BasicGraphicsScene *_scene;
 
         ConnectionId _connId;
+
+        QJsonObject m_ConditionDataJsonObject;
     };
 
     class MoveNodeCommand : public QUndoCommand {

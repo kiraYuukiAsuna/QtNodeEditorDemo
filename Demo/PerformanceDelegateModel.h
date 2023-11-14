@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QLineEdit>
+#include <QJsonArray>
 #include "QtNodes/NodeDelegateModel"
 #include "DefaultNodeData.h"
 #include "PerformanceJobInternalWidget.h"
@@ -33,9 +34,46 @@ public:
 
     virtual QString name() const override { return "PerformanceDelegateModel"; };
 
-//    QJsonObject save() const override;
-//
-//    void load(QJsonObject const &) override;
+    QJsonObject save() const override{
+        QJsonObject obj;
+        QJsonArray array;
+
+        auto data = m_InternalWidget->getCollection();
+        for(auto& info : data){
+            if(info.selected) {
+                QJsonValue value;
+                value = QJsonValue::fromVariant(QString::fromStdString(info.name));
+                array.append(value);
+            }
+        }
+
+        obj["model-name"] = name();
+        obj["data"] = array;
+        return obj;
+    }
+
+    void load(QJsonObject const& obj) override{
+        if(obj.contains("model-name")){
+            auto name = obj["model-name"];
+        }
+
+        PerformanceJobCollectionInfoList list;
+
+        if(obj.contains("data")){
+            auto data = obj["data"];
+            if(data.isArray()){
+                auto arrayData = data.toArray();
+
+                for(QJsonValueRef value : arrayData){
+                    if(value.isString()){
+                        list.push_back({value.toString().toStdString(),true});
+                    }
+                }
+            }
+        }
+
+        m_InternalWidget->updateCollection(list);
+    }
 
     virtual unsigned int nPorts(QtNodes::PortType portType) const override{
         if (portType == QtNodes::PortType::In) {
@@ -89,11 +127,23 @@ public:
 
     virtual QWidget *embeddedWidget() override{
         if (!m_InternalWidget) {
-            m_InternalWidget = new PerformanceJobInternalWidget(nullptr);
+            m_InternalWidget = new PerformanceJobInternalWidget(this);
 
             PerformanceJobCollectionInfoList list;
 
-            for (int i = 0; i < 10; ++i) {
+            for (int i = 0; i < 6; ++i) {
+                list.push_back({"path1/TestData" + std::to_string(i), i%2 == 1});
+            }
+
+            for (int i = 0; i < 6; ++i) {
+                list.push_back({"path2/TestData" + std::to_string(i), i%2 == 1});
+            }
+
+            for (int i = 0; i < 6; ++i) {
+                list.push_back({"path3/TestData" + std::to_string(i), i%2 == 1});
+            }
+
+            for (int i = 0; i < 6; ++i) {
                 list.push_back({"TestData" + std::to_string(i), i%2 == 1});
             }
 

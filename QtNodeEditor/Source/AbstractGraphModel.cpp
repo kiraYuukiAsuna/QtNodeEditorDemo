@@ -50,7 +50,7 @@ namespace QtNodes {
 
     void AbstractGraphModel::portsDeleted() {
         for (auto const connectionId: _shiftedByDynamicPortsConnections) {
-            addConnection(connectionId);
+            addConnection(connectionId, QJsonObject{});
         }
 
         _shiftedByDynamicPortsConnections.clear();
@@ -92,7 +92,7 @@ namespace QtNodes {
 
     void AbstractGraphModel::portsInserted() {
         for (auto const connectionId: _shiftedByDynamicPortsConnections) {
-            addConnection(connectionId);
+            addConnection(connectionId, QJsonObject{});
         }
 
         _shiftedByDynamicPortsConnections.clear();

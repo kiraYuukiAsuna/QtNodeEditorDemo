@@ -142,7 +142,7 @@ namespace QtNodes {
         void onConnectionDeleted(ConnectionId const connectionId);
 
         /// Slot called when the `connectionId` is created in the AbstractGraphModel.
-        void onConnectionCreated(ConnectionId const connectionId);
+        void onConnectionCreated(ConnectionId const connectionId, QJsonObject conditionDataJsonObject);
 
         void onNodeDeleted(NodeId const nodeId);
 

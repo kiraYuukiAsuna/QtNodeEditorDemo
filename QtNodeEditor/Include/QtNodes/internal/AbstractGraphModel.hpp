@@ -24,9 +24,19 @@ namespace QtNodes {
  *   - NodeId
  *   - ConnectionId
  */
+    class BasicGraphicsScene;
+
     class NODE_EDITOR_PUBLIC AbstractGraphModel : public QObject {
     Q_OBJECT
     public:
+        void setBasicGraphicsScene(BasicGraphicsScene* scene) {
+            m_Scene = scene;
+        }
+
+        BasicGraphicsScene* getBasicGraphicsScene() const {
+            return m_Scene;
+        }
+
         /// Generates a new unique NodeId.
         virtual NodeId newNodeId() = 0;
 
@@ -86,7 +96,7 @@ namespace QtNodes {
        * In the derived classes user must emite the signal to notify the
        * scene about the changes.
        */
-        virtual void addConnection(ConnectionId const connectionId) = 0;
+        virtual void addConnection(ConnectionId const connectionId, QJsonObject conditionDataJsonObject) = 0;
 
         /**
        * @returns `true` if there is data in the model associated with the
@@ -223,7 +233,7 @@ namespace QtNodes {
 
     Q_SIGNALS:
 
-        void connectionCreated(ConnectionId const connectionId);
+        void connectionCreated(ConnectionId const connectionId, QJsonObject conditionDataJsonObject);
 
         void connectionDeleted(ConnectionId const connectionId);
 
@@ -241,6 +251,7 @@ namespace QtNodes {
 
     private:
         std::vector<ConnectionId> _shiftedByDynamicPortsConnections;
+        BasicGraphicsScene* m_Scene;
     };
 
 } // namespace QtNodes

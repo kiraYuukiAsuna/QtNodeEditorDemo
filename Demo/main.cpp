@@ -218,7 +218,7 @@ int main(int argc, char *argv[]) {
         QtNodes::NodeId id2 = graphModel.addNode("PerformanceDelegateModel");
         graphModel.setNodeData(id2, QtNodes::NodeRole::Position, QPointF(300, 300));
 
-        graphModel.addConnection(QtNodes::ConnectionId{id1, 0, id2, 0});
+        graphModel.addConnection(QtNodes::ConnectionId{id1, 0, id2, 0}, QJsonObject{});
     }
 
     auto scene = new QtNodes::DataFlowGraphicsScene(graphModel);

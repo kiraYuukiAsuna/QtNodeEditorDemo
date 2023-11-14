@@ -72,10 +72,12 @@ namespace QtNodes {
         for (QJsonValue connection: connJsonArray) {
             QJsonObject connJson = connection.toObject();
 
+            QJsonObject conditionDataJsonObject = connJson["condition-data"].toObject();
+
             ConnectionId connId = fromJson(connJson);
 
             // Restore the connection
-            graphModel.addConnection(connId);
+            graphModel.addConnection(connId, conditionDataJsonObject);
 
             scene->connectionGraphicsObject(connId)->setSelected(true);
         }
@@ -352,13 +354,13 @@ namespace QtNodes {
 
 //-------------------------------------
 
-    DisconnectCommand::DisconnectCommand(BasicGraphicsScene *scene, ConnectionId const connId)
-            : _scene(scene), _connId(connId) {
+    DisconnectCommand::DisconnectCommand(BasicGraphicsScene *scene, ConnectionId const connId, QJsonObject conditionDataJsonObject)
+            : _scene(scene), _connId(connId), m_ConditionDataJsonObject(conditionDataJsonObject) {
         //
     }
 
     void DisconnectCommand::undo() {
-        _scene->graphModel().addConnection(_connId);
+        _scene->graphModel().addConnection(_connId, m_ConditionDataJsonObject);
     }
 
     void DisconnectCommand::redo() {
@@ -367,8 +369,8 @@ namespace QtNodes {
 
 //------
 
-    ConnectCommand::ConnectCommand(BasicGraphicsScene *scene, ConnectionId const connId)
-            : _scene(scene), _connId(connId) {
+    ConnectCommand::ConnectCommand(BasicGraphicsScene *scene, ConnectionId const connId, QJsonObject conditionDataJsonObject)
+            : _scene(scene), _connId(connId), m_ConditionDataJsonObject(conditionDataJsonObject) {
         //
     }
 
@@ -377,7 +379,7 @@ namespace QtNodes {
     }
 
     void ConnectCommand::redo() {
-        _scene->graphModel().addConnection(_connId);
+        _scene->graphModel().addConnection(_connId, m_ConditionDataJsonObject);
     }
 
 //------

@@ -22,11 +22,12 @@
 
 #include <stdexcept>
 #include <QMessageBox>
+#include <utility>
 
 namespace QtNodes {
 
     ConnectionGraphicsObject::ConnectionGraphicsObject(BasicGraphicsScene &scene,
-                                                       ConnectionId const connectionId)
+                                                       ConnectionId const connectionId, QJsonObject conditionDataJsonObject)
             : _connectionId(connectionId), _graphModel(scene.graphModel()), _connectionState(*this), _out{0, 0},
               _in{0, 0}, m_ConnectionGeometry(this) {
         scene.addItem(this);
@@ -43,6 +44,8 @@ namespace QtNodes {
         setZValue(-1.0);
 
         initializePosition();
+
+        m_ConditionDataJsonObject = std::move(conditionDataJsonObject);
 
         m_ConnectionGeometry.updateGeometry();
     }
@@ -247,8 +250,11 @@ namespace QtNodes {
 
             Q_ASSERT(graphicsView);
 
-            ConnectionPopupWindow view{nullptr};
-            view.exec();
+            ConnectionPopupWindow view{m_ConditionDataJsonObject, nullptr};
+
+            if (view.exec() == QDialog::Accepted) {
+                m_ConditionDataJsonObject = view.save();
+            }
         }
 
         _connectionState.setConnectionWidgetPressed(false);

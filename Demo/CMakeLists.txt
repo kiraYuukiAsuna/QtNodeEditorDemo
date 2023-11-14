@@ -21,6 +21,8 @@ set(PROJECTS_HEADERS
         PerformanceDelegateModel.h
         ConditionDelegateModel.h
         DefaultNodeData.h
+        CustomSelectWindow.h
+        CustomSelectWidget.h
         )
 
 set(PROJECT_SOURCES
@@ -29,12 +31,12 @@ set(PROJECT_SOURCES
         PerformanceDelegateModel.cpp
         ConditionDelegateModel.cpp
         DefaultNodeData.cpp
-        ConnectionCondiationPopupWindow.cpp
-        ConnectionCondiationPopupWindow.h
         PerformanceJobInternalWidget.h
         PerformanceJobInternalWidget.cpp
         FunctionJobInternalWidget.h
         FunctionJobInternalWidget.cpp
+        CustomSelectWindow.cpp
+        CustomSelectWidget.cpp
 )
 
 add_executable(Demo ${PROJECTS_HEADERS} ${PROJECT_SOURCES})

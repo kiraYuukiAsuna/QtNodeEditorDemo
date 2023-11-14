@@ -1,9 +1,10 @@
 #include "DataFlowGraphModel.hpp"
 #include "ConnectionIdHash.hpp"
-
+#include "AbstractGraphModel.hpp"
 #include <QJsonArray>
-
+#include "BasicGraphicsScene.hpp"
 #include <stdexcept>
+#include "ConnectionGraphicsObject.hpp"
 
 namespace QtNodes {
 
@@ -86,6 +87,14 @@ namespace QtNodes {
                     this,
                     &DataFlowGraphModel::portsInserted);
 
+            connect(model.get(),
+                    &NodeDelegateModel::embeddedWidgetSizeUpdated,
+                    this,
+                    [=,this](){
+                        Q_EMIT DataFlowGraphModel::nodeUpdated(newId);
+                    }
+                    );
+
             _models[newId] = std::move(model);
 
             Q_EMIT nodeCreated(newId);
@@ -120,10 +129,10 @@ namespace QtNodes {
                && portVacant(PortType::Out) && portVacant(PortType::In);
     }
 
-    void DataFlowGraphModel::addConnection(ConnectionId const connectionId) {
+    void DataFlowGraphModel::addConnection(ConnectionId const connectionId, QJsonObject conditionDataJsonObject) {
         _connectivity.insert(connectionId);
 
-        sendConnectionCreation(connectionId);
+        sendConnectionCreation(connectionId, conditionDataJsonObject);
 
         QVariant const portDataToPropagate = portData(connectionId.outNodeId,
                                                       PortType::Out,
@@ -137,8 +146,8 @@ namespace QtNodes {
                     PortRole::Data);
     }
 
-    void DataFlowGraphModel::sendConnectionCreation(ConnectionId const connectionId) {
-        Q_EMIT connectionCreated(connectionId);
+    void DataFlowGraphModel::sendConnectionCreation(ConnectionId const connectionId, QJsonObject conditionDataJsonObject) {
+        Q_EMIT connectionCreated(connectionId, conditionDataJsonObject);
 
         auto iti = _models.find(connectionId.inNodeId);
         auto ito = _models.find(connectionId.outNodeId);
@@ -425,10 +434,13 @@ namespace QtNodes {
         for (auto const &cid: _connectivity) {
             auto connectionJsonObject = toJson(cid);
 
-            // TODO: save from connection graphics object
             QJsonObject conditionDataJsonObject;
-            conditionDataJsonObject["cpu"] = "60.0";
-            conditionDataJsonObject["Network IO"] = "50.0";
+
+            auto* scene = getBasicGraphicsScene();
+            auto* cgo = scene->connectionGraphicsObject(cid);
+
+            conditionDataJsonObject = cgo->getConditionDataJsonObject();
+
             connectionJsonObject["condition-data"] = conditionDataJsonObject;
 
             connJsonArray.append(connectionJsonObject);
@@ -491,15 +503,12 @@ namespace QtNodes {
         for (QJsonValueRef connection: connectionJsonArray) {
             QJsonObject connJson = connection.toObject();
 
-            // TODO: read to connection graphics object
             QJsonObject conditionDataJsonObject = connJson["condition-data"].toObject();
-            conditionDataJsonObject["cpu"] = "60.0";
-            conditionDataJsonObject["Network IO"] = "50.0";
 
             ConnectionId connId = fromJson(connJson);
 
             // Restore the connection
-            addConnection(connId);
+            addConnection(connId, conditionDataJsonObject);
         }
     }
 
