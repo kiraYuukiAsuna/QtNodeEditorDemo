@@ -9,23 +9,31 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets Gui OpenGL)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets Gui OpenGL Svg)
 
 
-include_directories(../QtNodeEditor/Include)
+include_directories(
+        ../QtNodeEditor/Include
+        ThirdParty/QtAdvancedStylesheet
+)
 
 link_directories(${CMAKE_BINARY_DIR}/lib)
 
 set(PROJECTS_HEADERS
+        ThirdParty/QtAdvancedStylesheet/acss_globals.h
+        ThirdParty/QtAdvancedStylesheet/QtAdvancedStylesheet.h
+
         FunctionDelegateModel.h
         PerformanceDelegateModel.h
         ConditionDelegateModel.h
         DefaultNodeData.h
         CustomSelectWindow.h
         CustomSelectWidget.h
-        )
+)
 
 set(PROJECT_SOURCES
+        ThirdParty/QtAdvancedStylesheet/QtAdvancedStylesheet.cpp
+
         main.cpp
         FunctionDelegateModel.cpp
         PerformanceDelegateModel.cpp
@@ -37,6 +45,9 @@ set(PROJECT_SOURCES
         FunctionJobInternalWidget.cpp
         CustomSelectWindow.cpp
         CustomSelectWidget.cpp
+        mainwindow.cpp
+        mainwindow.h
+        mainwindow.ui
 )
 
 add_executable(Demo ${PROJECTS_HEADERS} ${PROJECT_SOURCES})
@@ -47,7 +58,7 @@ target_link_libraries(Demo
         Qt${QT_VERSION_MAJOR}::Widgets
         Qt${QT_VERSION_MAJOR}::Gui
         Qt${QT_VERSION_MAJOR}::OpenGL
-
+        Qt${QT_VERSION_MAJOR}::Svg
         QtNodes
-        )
+)
 

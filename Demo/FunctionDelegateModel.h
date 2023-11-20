@@ -107,7 +107,7 @@ public:
             }
         }else if(portType == QtNodes::PortType::Out) {
             if(portIndex == 0){
-                return QtNodes::ConnectionPolicy::One;
+                return QtNodes::ConnectionPolicy::Many;
             }
         }
         return QtNodes::ConnectionPolicy::One;

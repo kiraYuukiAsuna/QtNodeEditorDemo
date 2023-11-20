@@ -12,7 +12,7 @@
 #include "StyleCollection.hpp"
 #include "locateNode.hpp"
 #include "ConnectionPopupWindow.h"
-
+#include <QGraphicsProxyWidget>
 #include <QtWidgets/QGraphicsBlurEffect>
 #include <QtWidgets/QGraphicsDropShadowEffect>
 #include <QtWidgets/QGraphicsSceneMouseEvent>
@@ -246,15 +246,21 @@ namespace QtNodes {
         QPointF localPos = event->pos();
 
         if(m_ConnectionGeometry.getConditionWidgetRect().contains(localPos) && _connectionState.isConnectionWidgetPressed()){
-            auto* graphicsView = static_cast<QGraphicsView *>(event->widget());
+            auto graphicsView = static_cast<QGraphicsView *>(event->widget());
 
             Q_ASSERT(graphicsView);
 
             ConnectionPopupWindow view{m_ConditionDataJsonObject, nullptr};
+            // QGraphicsProxyWidget* proxyWidget = scene()->addWidget(&view);
+            // proxyWidget->setPos(scene()->width() - proxyWidget->widget()->width(), 0);
+            auto posRef = graphicsView->window()->pos()+ QPoint{graphicsView->rect().width(),0};
+            qDebug()<<posRef;
+            view.move(posRef.x() - view.rect().width() - 32, posRef.y() + 32);
 
             if (view.exec() == QDialog::Accepted) {
                 m_ConditionDataJsonObject = view.save();
             }
+            // scene()->removeItem(proxyWidget);
         }
 
         _connectionState.setConnectionWidgetPressed(false);

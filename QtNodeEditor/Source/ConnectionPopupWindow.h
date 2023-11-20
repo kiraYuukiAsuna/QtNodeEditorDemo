@@ -26,13 +26,9 @@ public:
 
     struct Info{
         bool independent = false;
-
-        bool cpu_condition = false;
         int allServerCPUHigherThan = 0;
         int anyServerCPUHigherThan = 0;
-
-        bool runPerformanceJobGroupEvenRun = false;
-
+        bool runPerformanceJobGroupInEvenRun = false;
         int runPerformanceJobGroupAfter = 0;
     };
 

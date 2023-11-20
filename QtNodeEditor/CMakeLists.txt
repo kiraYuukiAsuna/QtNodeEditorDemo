@@ -124,7 +124,7 @@ add_library(QtNodes
         ${CPP_SOURCE_FILES}
         ${HPP_HEADER_FILES}
         ${RESOURCES}
-        )
+)
 
 target_include_directories(QtNodes
         PUBLIC
@@ -133,7 +133,7 @@ target_include_directories(QtNodes
         PRIVATE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Source>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Include/QtNodes/internal>
-        )
+)
 
 target_link_libraries(QtNodes
         PUBLIC
@@ -141,7 +141,7 @@ target_link_libraries(QtNodes
         Qt${QT_VERSION_MAJOR}::Widgets
         Qt${QT_VERSION_MAJOR}::Gui
         Qt${QT_VERSION_MAJOR}::OpenGL
-        )
+)
 
 target_compile_definitions(QtNodes
         PUBLIC
@@ -150,20 +150,20 @@ target_compile_definitions(QtNodes
         NODE_EDITOR_EXPORTS
         #NODE_DEBUG_DRAWING
         QT_NO_KEYWORDS
-        )
+)
 
 target_compile_options(QtNodes
         PRIVATE
         $<$<CXX_COMPILER_ID:MSVC>:/W4 /wd4127 /EHsc /utf-8>
         $<$<CXX_COMPILER_ID:GNU>:-Wall -Wextra>
         $<$<CXX_COMPILER_ID:AppleClang>:-Wall -Wextra -Werror>
-        )
+)
 if (NOT "${CMAKE_CXX_SIMULATE_ID}" STREQUAL "MSVC")
     # Clang-Cl on MSVC identifies as "Clang" but behaves more like MSVC:
     target_compile_options(QtNodes
             PRIVATE
             $<$<CXX_COMPILER_ID:Clang>:-Wall -Wextra>
-            )
+    )
 endif ()
 
 set_target_properties(QtNodes
@@ -171,7 +171,7 @@ set_target_properties(QtNodes
         ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
         LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
         RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
-        )
+)
 
 if (QT_NODES_DEVELOPER_DEFAULTS)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/bin")
@@ -190,13 +190,13 @@ if (${QT_VERSION_MAJOR} EQUAL 6)
             ${HEADERS_TO_MOC}
             TARGET QtNodes
             OPTIONS --no-notes # Don't display a note for the headers which don't produce a moc_*.cpp
-            )
+    )
 else ()
     qt5_wrap_cpp(nodes_moc
             ${HEADERS_TO_MOC}
             TARGET QtNodes
             OPTIONS --no-notes # Don't display a note for the headers which don't produce a moc_*.cpp
-            )
+    )
 endif ()
 
 target_sources(QtNodes PRIVATE ${nodes_moc})
