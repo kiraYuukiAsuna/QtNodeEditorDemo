@@ -299,12 +299,12 @@ namespace QtNodes {
                     geometry.deleteIconRect(_nodeId).height()};
         if(rect.contains(localPos)
         && _nodeState.getDeleteIconPressed()){
-            QMessageBox msg;
-            msg.setText("Are your sure to delete this node?");
-            if(msg.exec() == QMessageBox::AcceptRole){
-
+            if(QMessageBox::information(nullptr, "Notice",
+                                        "Are your sure to delete this node?",
+                                        QMessageBox::StandardButton::Ok,
+                                        QMessageBox::StandardButton::Cancel) == QMessageBox::StandardButton::Ok){
+                _graphModel.postDeleteRequest(_nodeId);
             }
-            _graphModel.postDeleteRequest(_nodeId);
         }
 
         _nodeState.setDeleteIconPressed(false);

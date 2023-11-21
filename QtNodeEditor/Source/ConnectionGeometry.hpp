@@ -22,7 +22,7 @@ namespace QtNodes {
             m_ConditionWidgetRect = {cubic.pointAtPercent(0.50) - QPoint(m_IconSize.width() / 2, m_IconSize.height() / 2),
                                      QSize(m_IconSize.width(), m_IconSize.height())};
 
-            m_IconSize = {24,24};
+            m_IconSize = {64,64};
             m_IconPosition = cubic.pointAtPercent(0.50) - QPoint(m_IconSize.width() / 2, m_IconSize.height() / 2);
         }
 

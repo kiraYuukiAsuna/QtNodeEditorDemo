@@ -30,7 +30,7 @@ namespace QtNodes {
         // titlebar area
         QRectF const titleBarTextBoundingRect = captionRect(nodeId);
         m_TitleBarWidth = titleBarTextBoundingRect.width();
-        m_TitleBarHeight = titleBarTextBoundingRect.height();
+        m_TitleBarHeight = titleBarTextBoundingRect.height() + _titleBarExpand;
 
         auto embededWidget = _graphModel.nodeData<QWidget *>(nodeId, NodeRole::Widget);
         // content area
@@ -44,8 +44,8 @@ namespace QtNodes {
         }
 
         // left icon
-        QSize leftIconSize = {32,32};
-        QSize rightIconSize = {32,32};
+        QSize leftIconSize = {_iconSize,_iconSize};
+        QSize rightIconSize = {_iconSize,_iconSize};
 
         // total
         m_Width = std::max(m_TitleBarWidth + 64, m_ContentAreaWidth + 4 * (int)_portSpasing + (int)maxPortsTextAdvance(nodeId, PortType::In) + (int)maxPortsTextAdvance(nodeId, PortType::Out));
@@ -70,7 +70,7 @@ namespace QtNodes {
             m_ContentAreaHeight = step * std::max({outputCount, inputCount});
         }
 
-        m_Height = std::max(m_TitleBarHeight, 32) + m_ContentAreaHeight + 2 * _portSpasing;
+        m_Height = std::max(m_TitleBarHeight + _titleBarExpand, _iconSize) + m_ContentAreaHeight + 2 * _portSpasing;
 
         QSize size(m_Width, m_Height);
 
@@ -86,7 +86,7 @@ namespace QtNodes {
 
         double totalHeight = 0.0;
 
-        totalHeight += std::max({32,m_TitleBarHeight});
+        totalHeight += std::max({_iconSize,m_TitleBarHeight + _titleBarExpand});
         totalHeight += _portSpasing;
 
         totalHeight += step * portIndex;
@@ -154,10 +154,10 @@ namespace QtNodes {
 
     QPointF CustomNodeGeometry::captionPosition(NodeId const nodeId) const {
         QSize size = _graphModel.nodeData<QSize>(nodeId, NodeRole::Size);
-//        return QPointF(0.5 * (size.width() - captionRect(nodeId).width() - 64) + 32,
-//                       (float)2/3 * std::max({(int)captionRect(nodeId).height(), 32}));
-        return QPointF(32 + 12,
-                       (float)2/3 * std::max({(int)captionRect(nodeId).height(), 32}));
+//        return QPointF(0.5 * (size.width() - captionRect(nodeId).width() - 64) + _iconSize,
+//                       (float)2/3 * std::max({(int)captionRect(nodeId).height(), _iconSize}));
+        return QPointF(_iconSize + 12,
+                       (float)1/2*std::max({(int)captionRect(nodeId).height() + _titleBarExpand, _iconSize}));
     }
 
     QPointF CustomNodeGeometry::widgetPosition(NodeId const nodeId) const {
@@ -175,7 +175,7 @@ namespace QtNodes {
 //                return QPointF(2.0 * _portSpasing + maxPortsTextAdvance(nodeId, PortType::In),
 //                               (captionHeight + size.height() - w->height()) / 2.0);
 //            }
-            int yPos = std::max({32, m_TitleBarHeight}) + _portSpasing + (m_ContentAreaHeight - w->height()) / 2;
+            int yPos = std::max({_iconSize, m_TitleBarHeight + _titleBarExpand}) + _portSpasing + (m_ContentAreaHeight - w->height()) / 2;
             return QPointF(2 * _portSpasing + maxPortsTextAdvance(nodeId, PortType::In), yPos);
         }
         return QPointF();
@@ -245,11 +245,11 @@ namespace QtNodes {
     }
 
     QPointF CustomNodeGeometry::deleteIconPosition(const NodeId nodeId) const {
-        return {static_cast<qreal>(m_Width - 32), 0};
+        return {static_cast<qreal>(m_Width - _iconSize), (float)1/2*(m_TitleBarHeight - _iconSize)};
     }
 
     QRectF CustomNodeGeometry::deleteIconRect(const NodeId nodeId) const {
-        return {0, 0, 32, 32};
+        return {0, 0, static_cast<qreal>(_iconSize), static_cast<qreal>(_iconSize)};
     }
 
 } // namespace QtNodes

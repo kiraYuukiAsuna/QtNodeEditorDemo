@@ -26,11 +26,11 @@ namespace QtNodes {
 
         drawFilledConnectionPoints(painter, ngo);
 
+        drawNodeCaption(painter, ngo);
+
         drawNodeLeftIcon(painter, ngo);
 
         drawNodeRightIcon(painter, ngo);
-
-        drawNodeCaption(painter, ngo);
 
         drawEntryLabels(painter, ngo);
 
@@ -74,8 +74,8 @@ namespace QtNodes {
 
         QRectF boundary(0, 0, geom.m_Width, geom.m_Height);
 
-        double const xRadius = 6.0;
-        double const yRadius = 6.0;
+        double const xRadius = geom._nodeEdgeRadius;
+        double const yRadius = geom._nodeEdgeRadius;
 
         painter->drawRoundedRect(boundary, xRadius, yRadius);
     }
@@ -282,25 +282,25 @@ namespace QtNodes {
             painter->setPen(p);
         }
 
-//        //Drawing the message background
-//        if (model->validationState() == NodeValidationState::Valid) {
-//            painter->setBrush(nodeStyle.TitleBarBackgroundColor);
-//        } else if (model->validationState() == NodeValidationState::Warning) {
-//            painter->setBrush(nodeStyle.TitleBarBackgroundColor);
-//        } else if (model->validationState() == NodeValidationState::Error) {
-//            painter->setBrush(nodeStyle.TitleBarBackgroundColor);
-
-        double const xRadius = 3.0;
-        double const yRadius = 3.0;
+        auto type = model.nodeData(nodeId,QtNodes::NodeRole::Type);
+        //Drawing the message background
+        if(type == "FunctionDelegateModel"){
+            painter->setBrush(QColor(0x4CFFAA));
+        }else if(type == "PerformanceDelegateModel"){
+            painter->setBrush(QColor(0xFFEE43));
+        }
 
         auto geom = dynamic_cast<CustomNodeGeometry&>(geometry);
+
+        double const xRadius = geom._nodeEdgeRadius;
+        double const yRadius = geom._nodeEdgeRadius;
 
         QRectF boundary(0,
                         0,
                         geom.m_Width,
-                        std::max({32, geom.m_TitleBarHeight}));
-        QColor backgroundColor = Qt::transparent;
-        painter->setBrush(backgroundColor);
+                        std::max({geom._iconSize, geom.m_TitleBarHeight}));
+//        QColor backgroundColor = Qt::transparent;
+//        painter->setBrush(backgroundColor);
         painter->drawRoundedRect(boundary, xRadius, yRadius);
 
         painter->setPen(nodeStyle.FontColor);
@@ -409,8 +409,8 @@ namespace QtNodes {
 
         QRectF boundary(0,
                         0,
-                        32,
-                        32);
+                        geom._iconSize,
+                        geom._iconSize);
 
 
         QString type = model.nodeData(nodeId, NodeRole::Type).value<QString>();
@@ -439,13 +439,13 @@ namespace QtNodes {
 //        }
 
         QPixmap originalPixmap(iconPath);
-        QPixmap pixmap = originalPixmap.scaled(QSize(32, 32)*shrinkRatio);
+        QPixmap pixmap = originalPixmap.scaled(QSize(geom._iconSize, geom._iconSize)*shrinkRatio);
         QPen p(color, nodeStyle.PenWidth);
         p.setColor(backgroundColor);
         painter->setBrush(backgroundColor);
         painter->setPen(p);
 //        painter->drawRoundedRect(boundary, xRadius, yRadius);
-        painter->drawPixmap(QPointF(32*(1-shrinkRatio)/2, 32*(1-shrinkRatio))/2, pixmap);
+        painter->drawPixmap(QPointF(geom._iconSize*(1-shrinkRatio)/2, (float)1/2*(geom.m_TitleBarHeight - pixmap.size().height())), pixmap);
     }
 
     void CustomNodePainter::drawNodeRightIcon(QPainter *painter, NodeGraphicsObject &ngo) const {
@@ -481,10 +481,10 @@ namespace QtNodes {
 
         auto geom = dynamic_cast<CustomNodeGeometry&>(geometry);
 
-        QRectF boundary(geom.m_Width - 32,
+        QRectF boundary(geom.m_Width - geom._iconSize,
                         0,
-                        32,
-                        32);
+                        geom._iconSize,
+                        geom._iconSize);
 
         QString iconPath = ":/image/conditions.png";
         QColor backgroundColor = QColor(0xAEEDFF);
@@ -505,13 +505,13 @@ namespace QtNodes {
         }
 
         QPixmap originalPixmap(iconPath);
-        QPixmap pixmap = originalPixmap.scaled(QSize(32, 32)*shrinkRatio);
+        QPixmap pixmap = originalPixmap.scaled(QSize(64, 64)*shrinkRatio);
         QPen p(color, nodeStyle.PenWidth);
         p.setColor(backgroundColor);
         painter->setBrush(backgroundColor);
         painter->setPen(p);
 //        painter->drawRoundedRect(boundary, xRadius, yRadius);
-        painter->drawPixmap(QPointF(geom.m_Width - 32 + (float)(32 - pixmap.size().width())/2, (float)(32 - pixmap.size().width())/2), pixmap);
+        painter->drawPixmap(QPointF(geom.m_Width - geom._iconSize + (float)(geom._iconSize - pixmap.size().width())/2, (float)1/2*(geom.m_TitleBarHeight - pixmap.size().height())), pixmap);
     }
 
 } // namespace QtNodes

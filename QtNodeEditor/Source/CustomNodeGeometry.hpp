@@ -66,6 +66,9 @@ namespace QtNodes {
         mutable int m_TitleBarWidth;
         mutable int m_ContentAreaHeight;
         mutable int m_ContentAreaWidth;
+        const int32_t _titleBarExpand = 48;
+        const int32_t _iconSize = 64;
+        const float _nodeEdgeRadius = 12.0;
 
     };
 
