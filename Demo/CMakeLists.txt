@@ -48,6 +48,13 @@ set(PROJECT_SOURCES
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        ConnectionPopupWindow.h
+        ConnectionPopupWindow.cpp
+        ConnectionPopupWindow.ui
+        PerformanceJobInternalWidgetV1.cpp
+        PerformanceJobInternalWidgetV1.h
+        FunctionJobInternalWidgetV1.cpp
+        FunctionJobInternalWidgetV1.h
 )
 
 add_executable(Demo ${PROJECTS_HEADERS} ${PROJECT_SOURCES})

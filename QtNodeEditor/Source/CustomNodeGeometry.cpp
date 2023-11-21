@@ -2,7 +2,7 @@
 
 #include "AbstractGraphModel.hpp"
 #include "NodeData.hpp"
-
+#include <QApplication>
 #include <QPoint>
 #include <QRect>
 #include <QWidget>
@@ -15,7 +15,11 @@ namespace QtNodes {
               m_Width(180), m_Height(120),
               m_TitleBarHeight(0), m_TitleBarWidth(0),
               m_ContentAreaHeight(0), m_ContentAreaWidth(0) {
-        QFont f;
+        QFont f(QApplication::font());
+        f.setPixelSize(16);
+        f.setBold(false);
+        _fontMetrics = QFontMetrics(f);
+        f.setPixelSize(24);
         f.setBold(true);
         _boldFontMetrics = QFontMetrics(f);
 
@@ -29,7 +33,7 @@ namespace QtNodes {
     void CustomNodeGeometry::recomputeSize(NodeId const nodeId) const {
         // titlebar area
         QRectF const titleBarTextBoundingRect = captionRect(nodeId);
-        m_TitleBarWidth = titleBarTextBoundingRect.width();
+        m_TitleBarWidth = titleBarTextBoundingRect.width() + _iconSize*2 + 12;
         m_TitleBarHeight = titleBarTextBoundingRect.height() + _titleBarExpand;
 
         auto embededWidget = _graphModel.nodeData<QWidget *>(nodeId, NodeRole::Widget);
@@ -43,12 +47,8 @@ namespace QtNodes {
             m_ContentAreaHeight = 0;
         }
 
-        // left icon
-        QSize leftIconSize = {_iconSize,_iconSize};
-        QSize rightIconSize = {_iconSize,_iconSize};
-
         // total
-        m_Width = std::max(m_TitleBarWidth + 64, m_ContentAreaWidth + 4 * (int)_portSpasing + (int)maxPortsTextAdvance(nodeId, PortType::In) + (int)maxPortsTextAdvance(nodeId, PortType::Out));
+        m_Width = std::max(m_TitleBarWidth, m_ContentAreaWidth + 4 * (int)_portSpasing + (int)maxPortsTextAdvance(nodeId, PortType::In) + (int)maxPortsTextAdvance(nodeId, PortType::Out));
 
         if (m_Width > m_ContentAreaWidth + 4 * (int)_portSpasing + (int)maxPortsTextAdvance(nodeId, PortType::In) +  (int)maxPortsTextAdvance(nodeId, PortType::Out)) {
             m_ContentAreaWidth = m_Width - 4 * (int)_portSpasing - (int)maxPortsTextAdvance(nodeId, PortType::In) -  (int)maxPortsTextAdvance(nodeId, PortType::Out);
@@ -60,7 +60,7 @@ namespace QtNodes {
             }
 
         } else {
-            m_TitleBarWidth = m_Width - 64;
+            m_TitleBarWidth = m_Width - _iconSize*2;
         }
 
         unsigned int step = _fontMetrics.height();
@@ -70,7 +70,7 @@ namespace QtNodes {
             m_ContentAreaHeight = step * std::max({outputCount, inputCount});
         }
 
-        m_Height = std::max(m_TitleBarHeight + _titleBarExpand, _iconSize) + m_ContentAreaHeight + 2 * _portSpasing;
+        m_Height = std::max(m_TitleBarHeight, _iconSize) + m_ContentAreaHeight + 2 * _portSpasing;
 
         QSize size(m_Width, m_Height);
 
@@ -86,7 +86,7 @@ namespace QtNodes {
 
         double totalHeight = 0.0;
 
-        totalHeight += std::max({_iconSize,m_TitleBarHeight + _titleBarExpand});
+        totalHeight += std::max({_iconSize,m_TitleBarHeight});
         totalHeight += _portSpasing;
 
         totalHeight += step * portIndex;
@@ -156,8 +156,8 @@ namespace QtNodes {
         QSize size = _graphModel.nodeData<QSize>(nodeId, NodeRole::Size);
 //        return QPointF(0.5 * (size.width() - captionRect(nodeId).width() - 64) + _iconSize,
 //                       (float)2/3 * std::max({(int)captionRect(nodeId).height(), _iconSize}));
-        return QPointF(_iconSize + 12,
-                       (float)1/2*std::max({(int)captionRect(nodeId).height() + _titleBarExpand, _iconSize}));
+        return QPointF(_iconSize + 6,
+                       (float)1/2*std::max({m_TitleBarHeight + (int)captionRect(nodeId).height()/2, _iconSize}));
     }
 
     QPointF CustomNodeGeometry::widgetPosition(NodeId const nodeId) const {
@@ -175,7 +175,7 @@ namespace QtNodes {
 //                return QPointF(2.0 * _portSpasing + maxPortsTextAdvance(nodeId, PortType::In),
 //                               (captionHeight + size.height() - w->height()) / 2.0);
 //            }
-            int yPos = std::max({_iconSize, m_TitleBarHeight + _titleBarExpand}) + _portSpasing + (m_ContentAreaHeight - w->height()) / 2;
+            int yPos = std::max({_iconSize, m_TitleBarHeight}) + _portSpasing + (m_ContentAreaHeight - w->height()) / 2;
             return QPointF(2 * _portSpasing + maxPortsTextAdvance(nodeId, PortType::In), yPos);
         }
         return QPointF();
@@ -225,7 +225,7 @@ namespace QtNodes {
                                                       : NodeRole::InPortCount)
                 .toUInt();
 
-        for (PortIndex portIndex = 0ul; portIndex < n; ++portIndex) {
+        for (PortIndex portIndex = 0; portIndex < n; ++portIndex) {
             QString name;
 
             if (_graphModel.portData<bool>(nodeId, portType, portIndex, PortRole::CaptionVisible)) {

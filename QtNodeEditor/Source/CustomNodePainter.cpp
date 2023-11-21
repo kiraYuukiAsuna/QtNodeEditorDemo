@@ -285,9 +285,9 @@ namespace QtNodes {
         auto type = model.nodeData(nodeId,QtNodes::NodeRole::Type);
         //Drawing the message background
         if(type == "FunctionDelegateModel"){
-            painter->setBrush(QColor(0x4CFFAA));
+            painter->setBrush(QColor(0x398DFF));
         }else if(type == "PerformanceDelegateModel"){
-            painter->setBrush(QColor(0xFFEE43));
+            painter->setBrush(QColor(0xFFB300));
         }
 
         auto geom = dynamic_cast<CustomNodeGeometry&>(geometry);
@@ -312,6 +312,7 @@ namespace QtNodes {
 
         QFont f = painter->font();
         f.setBold(true);
+        f.setPixelSize(24);
 
         QPointF position = geometry.captionPosition(nodeId);
 
@@ -320,6 +321,7 @@ namespace QtNodes {
         painter->drawText(position, name);
 
         f.setBold(false);
+        f.setPixelSize(16);
         painter->setFont(f);
     }
 
@@ -357,7 +359,16 @@ namespace QtNodes {
                     s = portData.value<NodeDataType>().name;
                 }
 
+                QFont f = painter->font();
+                f.setBold(true);
+                f.setPixelSize(24);
+
                 painter->drawText(p, s);
+                painter->setFont(f);
+
+                f.setBold(false);
+                f.setPixelSize(16);
+                painter->setFont(f);
             }
         }
     }

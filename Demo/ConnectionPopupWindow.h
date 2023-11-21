@@ -1,13 +1,12 @@
 #pragma once
 
-#include <QDialog>
-#include <QJsonObject>
+#include "QtNodes/ConnectionPopupWindowBase.h"
 
 namespace Ui {
 class ConnectionPopupWindow;
 }
 
-class ConnectionPopupWindow : public QDialog
+class ConnectionPopupWindow : public ConnectionPopupWindowBase
 {
     Q_OBJECT
 
@@ -15,14 +14,9 @@ public:
     explicit ConnectionPopupWindow(QJsonObject conditionDataJsonObject, QWidget *parent = nullptr);
     ~ConnectionPopupWindow();
 
-    void readFromJsonObject();
+    void readFromInternalJsonObject() override;
 
-    void writeToJsonObject();
-
-    QJsonObject save(){
-        writeToJsonObject();
-        return m_ConditionDataJsonObject;
-    }
+    void writeToInternalJsonObject() override;
 
     struct Info{
         bool independent = false;
@@ -34,6 +28,4 @@ public:
 
 private:
     Ui::ConnectionPopupWindow *ui;
-
-    QJsonObject m_ConditionDataJsonObject;
 };

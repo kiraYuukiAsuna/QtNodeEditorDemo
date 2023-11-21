@@ -11,7 +11,7 @@
 #include "NodeGraphicsObject.hpp"
 #include "StyleCollection.hpp"
 #include "locateNode.hpp"
-#include "ConnectionPopupWindow.h"
+#include "../../Demo/ConnectionPopupWindow.h"
 #include <QGraphicsProxyWidget>
 #include <QtWidgets/QGraphicsBlurEffect>
 #include <QtWidgets/QGraphicsDropShadowEffect>
@@ -255,10 +255,11 @@ namespace QtNodes {
             // proxyWidget->setPos(scene()->width() - proxyWidget->widget()->width(), 0);
             auto posRef = graphicsView->window()->pos()+ QPoint{graphicsView->rect().width(),0};
             qDebug()<<posRef;
-            view.move(posRef.x() - view.rect().width() - 32, posRef.y() + 32);
+            view.move(posRef.x() - view.rect().width() - 16, posRef.y() + 48);
 
             if (view.exec() == QDialog::Accepted) {
-                m_ConditionDataJsonObject = view.save();
+                view.save();
+                m_ConditionDataJsonObject = view.getJsonObject();
             }
             // scene()->removeItem(proxyWidget);
         }

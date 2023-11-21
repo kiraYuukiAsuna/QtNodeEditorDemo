@@ -35,16 +35,13 @@ namespace QtNodes {
         QColor ShadowColor;
         QColor FontColor;
         QColor FontColorFaded;
-
         QColor ConnectionPointColor;
         QColor FilledConnectionPointColor;
-
         QColor WarningColor;
         QColor ErrorColor;
 
         float PenWidth;
         float HoveredPenWidth;
-
         float ConnectionPointDiameter;
 
         float Opacity;

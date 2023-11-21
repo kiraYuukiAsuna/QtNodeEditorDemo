@@ -4,7 +4,7 @@
 #include <QJsonArray>
 #include "QtNodes/NodeDelegateModel"
 #include "DefaultNodeData.h"
-#include "PerformanceJobInternalWidget.h"
+#include "PerformanceJobInternalWidgetV1.h"
 
 class PerformanceDelegateModel : public QtNodes::NodeDelegateModel  {
 Q_OBJECT
@@ -38,17 +38,18 @@ public:
         QJsonObject obj;
         QJsonArray array;
 
-        auto data = m_InternalWidget->getCollection();
-        for(auto& info : data){
-            if(info.selected) {
-                QJsonValue value;
-                value = QJsonValue::fromVariant(QString::fromStdString(info.name));
-                array.append(value);
-            }
-        }
+        auto exchange = m_InternalWidget->getInternalData();
+
+        QJsonObject internalData;
+
+        internalData["name"] = QString::fromStdString(exchange.name);
+        internalData["times"] = QString::fromStdString(exchange.times);
+        internalData["time"] = QString::fromStdString(exchange.time);
+        internalData["outputType"] = QString::fromStdString(exchange.outputType);
+
 
         obj["model-name"] = name();
-        obj["data"] = array;
+        obj["data"] = internalData;
         return obj;
     }
 
@@ -57,22 +58,28 @@ public:
             auto name = obj["model-name"];
         }
 
-        PerformanceJobCollectionInfoList list;
+        PerformanceJobInternalWidgetV1DataExchange exchange;
 
         if(obj.contains("data")){
             auto data = obj["data"];
-            if(data.isArray()){
-                auto arrayData = data.toArray();
-
-                for(QJsonValueRef value : arrayData){
-                    if(value.isString()){
-                        list.push_back({value.toString().toStdString(),true});
-                    }
+            if(data.isObject()){
+                auto json = data.toObject();
+                if(json.contains("name")){
+                    exchange.name = json["name"].toString().toStdString();
+                }
+                if(json.contains("times")){
+                    exchange.times = json["times"].toString().toStdString();
+                }
+                if(json.contains("time")){
+                    exchange.time = json["time"].toString().toStdString();
+                }
+                if(json.contains("outputType")){
+                    exchange.outputType = json["outputType"].toString().toStdString();
                 }
             }
         }
 
-        m_InternalWidget->updateCollection(list);
+        m_InternalWidget->updateInternalData(exchange);
     }
 
     virtual unsigned int nPorts(QtNodes::PortType portType) const override{
@@ -127,27 +134,16 @@ public:
 
     virtual QWidget *embeddedWidget() override{
         if (!m_InternalWidget) {
-            m_InternalWidget = new PerformanceJobInternalWidget(this);
+            m_InternalWidget = new PerformanceJobInternalWidgetV1{};
 
-            PerformanceJobCollectionInfoList list;
+            PerformanceJobInternalWidgetV1DataExchange exchange;
 
-            for (int i = 0; i < 6; ++i) {
-                list.push_back({"path1/TestData" + std::to_string(i), i%2 == 1});
-            }
+            exchange.name = "test";
+            exchange.times = "3";
+            exchange.time = "30 min";
+            exchange.outputType = "multi";
 
-            for (int i = 0; i < 6; ++i) {
-                list.push_back({"path2/TestData" + std::to_string(i), i%2 == 1});
-            }
-
-            for (int i = 0; i < 6; ++i) {
-                list.push_back({"path3/TestData" + std::to_string(i), i%2 == 1});
-            }
-
-            for (int i = 0; i < 6; ++i) {
-                list.push_back({"TestData" + std::to_string(i), i%2 == 1});
-            }
-
-            m_InternalWidget->updateCollection(list);
+            m_InternalWidget->updateInternalData(exchange);
         }
 
         return m_InternalWidget;
@@ -201,5 +197,5 @@ public:
 //    void portsInserted();
 
 private:
-    PerformanceJobInternalWidget* m_InternalWidget = nullptr;
+    PerformanceJobInternalWidgetV1* m_InternalWidget = nullptr;
 };

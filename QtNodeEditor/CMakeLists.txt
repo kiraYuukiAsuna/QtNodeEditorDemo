@@ -71,8 +71,8 @@ set(CPP_SOURCE_FILES
         Source/ConnectionGeometry.cpp
         Source/CustomNodePainter.cpp
         Source/CustomNodeGeometry.cpp
-        Source/ConnectionPopupWindow.cpp
-        Source/ConnectionPopupWindow.ui
+        Source/ConnectionPopupWindowBase.cpp
+        Include/QtNodes/ConnectionPopupWindowBase.h
 
 
 )
@@ -115,8 +115,6 @@ set(HPP_HEADER_FILES
         Source/ConnectionGeometry.hpp
         Include/QtNodes/internal/CustomNodePainter.h
         Source/CustomNodeGeometry.hpp
-        Source/ConnectionPopupWindow.h
-
 
 )
 
