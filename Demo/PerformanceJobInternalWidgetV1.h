@@ -9,6 +9,7 @@ struct PerformanceJobInternalWidgetV1DataExchange{
     std::string times;
     std::string time;
     std::string outputType;
+    std::string description;
 };
 
 class PerformanceJobInternalWidgetV1:public QWidget {
@@ -27,4 +28,5 @@ private:
     QLabel m_Times;
     QLabel m_Time;
     QLabel m_OutputType;
+    QLabel m_Description;
 };

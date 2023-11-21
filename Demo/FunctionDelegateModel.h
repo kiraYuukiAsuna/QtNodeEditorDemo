@@ -6,7 +6,7 @@
 #include <QDebug>
 #include <QJsonArray>
 #include "DefaultNodeData.h"
-#include "FunctionJobInternalWidget.h"
+#include "FunctionJobInternalWidgetV1.h"
 
 class FunctionDelegateModel : public QtNodes::NodeDelegateModel {
     Q_OBJECT
@@ -24,11 +24,11 @@ public:
     virtual QString portCaption(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const {
         if (portType == QtNodes::PortType::In) {
             if(portIndex == 0){
-                return "In";
+                return "FuncIn";
             }
         }else if(portType == QtNodes::PortType::Out) {
             if(portIndex == 0){
-                return "Out";
+                return "FuncOut";
             }
         }
         return "Invalid";
@@ -40,17 +40,18 @@ public:
         QJsonObject obj;
         QJsonArray array;
 
-        auto data = m_InternalWidget->getCollection();
-        for(auto& info : data){
-            if(info.selected) {
-                QJsonValue value;
-                value = QJsonValue::fromVariant(QString::fromStdString(info.name));
-                array.append(value);
-            }
-        }
+        auto exchange = m_InternalWidget->getInternalData();
+
+        QJsonObject internalData;
+
+        internalData["name"] = QString::fromStdString(exchange.name);
+        internalData["times"] = QString::fromStdString(exchange.times);
+        internalData["time"] = QString::fromStdString(exchange.time);
+        internalData["outputType"] = QString::fromStdString(exchange.outputType);
+        internalData["description"] = QString::fromStdString(exchange.description);
 
         obj["model-name"] = name();
-        obj["data"] = array;
+        obj["data"] = internalData;
         return obj;
     }
 
@@ -59,22 +60,31 @@ public:
             auto name = obj["model-name"];
         }
 
-        FunctionJobCollectionInfoList list;
+        FunctionJobInternalWidgetV1DataExchange exchange;
 
         if(obj.contains("data")){
             auto data = obj["data"];
-            if(data.isArray()){
-                auto arrayData = data.toArray();
-
-                for(QJsonValueRef value : arrayData){
-                    if(value.isString()){
-                        list.push_back({value.toString().toStdString(),true});
-                    }
+            if(data.isObject()){
+                auto json = data.toObject();
+                if(json.contains("name")){
+                    exchange.name = json["name"].toString().toStdString();
+                }
+                if(json.contains("times")){
+                    exchange.times = json["times"].toString().toStdString();
+                }
+                if(json.contains("time")){
+                    exchange.time = json["time"].toString().toStdString();
+                }
+                if(json.contains("outputType")){
+                    exchange.outputType = json["outputType"].toString().toStdString();
+                }
+                if(json.contains("description")){
+                    exchange.description = json["description"].toString().toStdString();
                 }
             }
         }
 
-        m_InternalWidget->updateCollection(list);
+        m_InternalWidget->updateInternalData(exchange);
     }
 
     virtual unsigned int nPorts(QtNodes::PortType portType) const override{
@@ -129,27 +139,17 @@ public:
 
     virtual QWidget *embeddedWidget() override{
         if (!m_InternalWidget) {
-            m_InternalWidget = new FunctionJobInternalWidget(this);
+            m_InternalWidget = new FunctionJobInternalWidgetV1{};
 
-            FunctionJobCollectionInfoList list;
+            FunctionJobInternalWidgetV1DataExchange exchange;
 
-            for (int i = 0; i < 6; ++i) {
-                list.push_back({"path1/TestData" + std::to_string(i), i%2 == 1});
-            }
+            exchange.name = "Name: test_function";
+            exchange.times = "Times: 3";
+            exchange.time = "Time: 30 min";
+            exchange.outputType = "OutputType: multi";
+            exchange.description = "This is a test function node!";
 
-            for (int i = 0; i < 6; ++i) {
-                list.push_back({"path2/TestData" + std::to_string(i), i%2 == 1});
-            }
-
-            for (int i = 0; i < 6; ++i) {
-                list.push_back({"path3/TestData" + std::to_string(i), i%2 == 1});
-            }
-
-            for (int i = 0; i < 6; ++i) {
-                list.push_back({"TestData" + std::to_string(i), i%2 == 1});
-            }
-
-            m_InternalWidget->updateCollection(list);
+            m_InternalWidget->updateInternalData(exchange);
         }
 
         return m_InternalWidget;
@@ -203,6 +203,6 @@ public:
 //    void portsInserted();
 
 private:
-    FunctionJobInternalWidget* m_InternalWidget = nullptr;
+    FunctionJobInternalWidgetV1* m_InternalWidget = nullptr;
 };
 

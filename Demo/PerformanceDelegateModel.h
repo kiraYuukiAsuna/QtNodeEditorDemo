@@ -22,11 +22,11 @@ public:
     virtual QString portCaption(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const {
         if (portType == QtNodes::PortType::In) {
             if(portIndex == 0){
-                return "In";
+                return "PerfIn";
             }
         }else if(portType == QtNodes::PortType::Out) {
             if(portIndex == 0){
-                return "Out";
+                return "PerfOut";
             }
         }
         return "Invalid";
@@ -46,7 +46,7 @@ public:
         internalData["times"] = QString::fromStdString(exchange.times);
         internalData["time"] = QString::fromStdString(exchange.time);
         internalData["outputType"] = QString::fromStdString(exchange.outputType);
-
+        internalData["description"] = QString::fromStdString(exchange.description);
 
         obj["model-name"] = name();
         obj["data"] = internalData;
@@ -75,6 +75,9 @@ public:
                 }
                 if(json.contains("outputType")){
                     exchange.outputType = json["outputType"].toString().toStdString();
+                }
+                if(json.contains("description")){
+                    exchange.description = json["description"].toString().toStdString();
                 }
             }
         }
@@ -138,10 +141,11 @@ public:
 
             PerformanceJobInternalWidgetV1DataExchange exchange;
 
-            exchange.name = "test";
-            exchange.times = "3";
-            exchange.time = "30 min";
-            exchange.outputType = "multi";
+            exchange.name = "Name: test_performance";
+            exchange.times = "Times: 3";
+            exchange.time = "Time: 30 min";
+            exchange.outputType = "OutputType: multi";
+            exchange.description = "This is a test performance node!";
 
             m_InternalWidget->updateInternalData(exchange);
         }

@@ -54,11 +54,11 @@
     ],
     "FontColor": "white",
     "FontColorFaded": "gray",
-    "ConnectionPointColor": "gray",
+    "ConnectionPointColor": "white",
     "FilledConnectionPointColor": [
-      0,
-      0,
-      0
+      129,
+      69,
+      255
     ],
     "ErrorColor": "red",
     "WarningColor": [
@@ -66,9 +66,9 @@
       155,
       169
     ],
-    "PenWidth": 1.0,
-    "HoveredPenWidth": 2.0,
-    "ConnectionPointDiameter": 8.0,
+    "PenWidth": 3.0,
+    "HoveredPenWidth": 6.0,
+    "ConnectionPointDiameter": 12.0,
     "Opacity": 1.0
   },
   "ConnectionStyle": {
@@ -93,9 +93,9 @@
       140,
       255
     ],
-    "LineWidth": 2.0,
-    "ConstructionLineWidth": 2.0,
-    "PointDiameter": 8.0,
+    "LineWidth": 4.0,
+    "ConstructionLineWidth": 4.0,
+    "PointDiameter": 12.0,
     "UseDataDefinedColors": false
   }
 }

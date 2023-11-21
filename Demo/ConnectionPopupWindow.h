@@ -19,11 +19,18 @@ public:
     void writeToInternalJsonObject() override;
 
     struct Info{
-        bool independent = false;
-        int allServerCPUHigherThan = 0;
-        int anyServerCPUHigherThan = 0;
-        bool runPerformanceJobGroupInEvenRun = false;
-        int runPerformanceJobGroupAfter = 0;
+        bool independentChecked = false;
+
+        bool allServerCPUHigherThanChecked = false;
+        int allServerCPUHigherThanValue = 0;
+
+        bool anyServerCPUHigherThaChecked = false;
+        int anyServerCPUHigherThanValue = 0;
+
+        bool runPerformanceJobGroupAfterChecked = false;
+        int runPerformanceJobGroupAfterValue = 0;
+
+        bool runPerformanceJobGroupInEvenRunChecked = false;
     };
 
 private:

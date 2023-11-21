@@ -24,7 +24,7 @@
       </widget>
      </item>
      <item row="1" column="0">
-      <widget class="QRadioButton" name="allServerCPUHigherThan_2">
+      <widget class="QRadioButton" name="allServerCPUHigherThan">
        <property name="text">
         <string>allServerCPUHigherThan</string>
        </property>
@@ -33,7 +33,7 @@
      <item row="1" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <widget class="QSpinBox" name="allServerCPUHigherThan"/>
+        <widget class="QSpinBox" name="allServerCPUHigherThanValue"/>
        </item>
        <item>
         <widget class="QLabel" name="label_2">
@@ -45,7 +45,7 @@
       </layout>
      </item>
      <item row="2" column="0">
-      <widget class="QRadioButton" name="anyServerCPUHigherThan_2">
+      <widget class="QRadioButton" name="anyServerCPUHigherThan">
        <property name="text">
         <string>anyServerCPUHigherThan</string>
        </property>
@@ -61,12 +61,12 @@
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="anyServerCPUHigherThan"/>
+        <widget class="QSpinBox" name="anyServerCPUHigherThanValue"/>
        </item>
       </layout>
      </item>
      <item row="3" column="0">
-      <widget class="QRadioButton" name="runPerformanceJobGroupAfter_2">
+      <widget class="QRadioButton" name="runPerformanceJobGroupAfter">
        <property name="text">
         <string>runPerformanceJobGroupAfter</string>
        </property>
@@ -82,7 +82,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="runPerformanceJobGroupAfter"/>
+        <widget class="QSpinBox" name="runPerformanceJobGroupAfterValue"/>
        </item>
       </layout>
      </item>

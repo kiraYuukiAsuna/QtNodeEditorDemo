@@ -30,46 +30,69 @@ ConnectionPopupWindow::~ConnectionPopupWindow()
 void ConnectionPopupWindow::readFromInternalJsonObject() {
     Info info;
 
-    if(getJsonObject().contains("independent")){
-        if(getJsonObject()["independent"].isBool()){
-            info.independent = getJsonObject()["independent"].toBool(false);
+    if(getJsonObject().contains("independentChecked")){
+        if(getJsonObject()["independentChecked"].isBool()){
+            info.independentChecked = getJsonObject()["independentChecked"].toBool(false);
         }
     }
-    if(getJsonObject().contains("allServerCPUHigherThan")){
-        info.allServerCPUHigherThan = getJsonObject()["allServerCPUHigherThan"].toInt(0);
+
+    if(getJsonObject().contains("allServerCPUHigherThanChecked")){
+        if(getJsonObject()["allServerCPUHigherThanChecked"].isBool()){
+            info.allServerCPUHigherThanChecked = getJsonObject()["allServerCPUHigherThanChecked"].toBool(false);
+        }
     }
-    if(getJsonObject().contains("anyServerCPUHigherThan")){
-        info.anyServerCPUHigherThan = getJsonObject()["anyServerCPUHigherThan"].toInt(0);
+    if(getJsonObject().contains("allServerCPUHigherThanValue")){
+        if(getJsonObject()["allServerCPUHigherThanValue"].isBool()){
+            info.allServerCPUHigherThanValue= getJsonObject()["allServerCPUHigherThanValue"].toInt(0);
+        }
     }
-    if(getJsonObject().contains("runPerformanceJobGroupEvenRun")){
-        if(getJsonObject()["runPerformanceJobGroupEvenRun"].isBool()) {
-            info.runPerformanceJobGroupInEvenRun = getJsonObject()["runPerformanceJobGroupEvenRun"].toBool(
+
+
+    if(getJsonObject().contains("anyServerCPUHigherThaChecked")){
+        info.anyServerCPUHigherThaChecked = getJsonObject()["anyServerCPUHigherThaChecked"].toBool(false);
+    }
+    if(getJsonObject().contains("anyServerCPUHigherThanValue")){
+        info.anyServerCPUHigherThanValue = getJsonObject()["anyServerCPUHigherThanValue"].toInt(0);
+    }
+
+    if(getJsonObject().contains("runPerformanceJobGroupAfterChecked")){
+        info.runPerformanceJobGroupAfterChecked = getJsonObject()["runPerformanceJobGroupAfterChecked"].toBool(false);
+    }
+    if(getJsonObject().contains("runPerformanceJobGroupAfterValue")){
+        info.runPerformanceJobGroupAfterValue = getJsonObject()["runPerformanceJobGroupAfterValue"].toInt(0);
+    }
+
+    if(getJsonObject().contains("runPerformanceJobGroupEvenRunChecked")){
+        if(getJsonObject()["runPerformanceJobGroupEvenRunChecked"].isBool()) {
+            info.runPerformanceJobGroupInEvenRunChecked = getJsonObject()["runPerformanceJobGroupEvenRunChecked"].toBool(
                     false);
         }
     }
-    if(getJsonObject().contains("runPerformanceJobGroupAfter")){
-        info.runPerformanceJobGroupAfter = getJsonObject()["runPerformanceJobGroupAfter"].toInt(0);
-    }
 
-    ui->independent->setChecked(info.independent);
-    ui->allServerCPUHigherThan->setValue(info.allServerCPUHigherThan);
-    ui->anyServerCPUHigherThan->setValue(info.anyServerCPUHigherThan);
-    ui->runPerformanceJobGroupInEvenRun->setChecked(info.runPerformanceJobGroupInEvenRun);
-    ui->runPerformanceJobGroupAfter->setValue(info.runPerformanceJobGroupAfter);
+    ui->independent->setChecked(info.independentChecked);
+    ui->allServerCPUHigherThan->setChecked(info.allServerCPUHigherThanChecked);
+    ui->allServerCPUHigherThanValue->setValue(info.allServerCPUHigherThanValue);
+    ui->anyServerCPUHigherThan->setChecked(info.anyServerCPUHigherThaChecked);
+    ui->anyServerCPUHigherThanValue->setValue(info.anyServerCPUHigherThanValue);
+    ui->runPerformanceJobGroupAfter->setChecked(info.runPerformanceJobGroupAfterChecked);
+    ui->runPerformanceJobGroupAfterValue->setValue(info.runPerformanceJobGroupAfterValue);
+    ui->runPerformanceJobGroupInEvenRun->setChecked(info.runPerformanceJobGroupInEvenRunChecked);
 }
 
 void ConnectionPopupWindow::writeToInternalJsonObject() {
     Info info;
 
-    info.independent = ui->independent->isChecked();
-    info.allServerCPUHigherThan = ui->allServerCPUHigherThan->value();
-    info.anyServerCPUHigherThan = ui->anyServerCPUHigherThan->value();
-    info.runPerformanceJobGroupInEvenRun = ui->runPerformanceJobGroupInEvenRun->isChecked();
-    info.runPerformanceJobGroupAfter = ui->runPerformanceJobGroupAfter->value();
+    getJsonObject()["independentChecked"] = info.independentChecked;
 
-    getJsonObject()["independent"] = info.independent;
-    getJsonObject()["allServerCPUHigherThan"] = info.allServerCPUHigherThan;
-    getJsonObject()["anyServerCPUHigherThan"] = info.anyServerCPUHigherThan;
-    getJsonObject()["runPerformanceJobGroupEvenRun"] = info.runPerformanceJobGroupInEvenRun;
-    getJsonObject()["runPerformanceJobGroupAfter"] = info.runPerformanceJobGroupAfter;
+    getJsonObject()["allServerCPUHigherThanChecked"] = info.allServerCPUHigherThanChecked;
+    getJsonObject()["allServerCPUHigherThanValue"] = info.allServerCPUHigherThanValue;
+
+    getJsonObject()["anyServerCPUHigherThanChecked"] = info.anyServerCPUHigherThaChecked;
+    getJsonObject()["anyServerCPUHigherThanValue"] = info.anyServerCPUHigherThanValue;
+
+    getJsonObject()["runPerformanceJobGroupAfterChecked"] = info.runPerformanceJobGroupAfterChecked;
+    getJsonObject()["runPerformanceJobGroupAfterValue"] = info.runPerformanceJobGroupAfterValue;
+
+    getJsonObject()["runPerformanceJobGroupEvenRunChecked"] = info.runPerformanceJobGroupInEvenRunChecked;
+
 }

@@ -17,7 +17,7 @@ namespace QtNodes {
     QRectF AbstractNodeGeometry::boundingRect(NodeId const nodeId) const {
         QSize s = size(nodeId);
 
-        double ratio = 0.20;
+        double ratio = 0.08;
 
         int widthMargin = s.width() * ratio;
         int heightMargin = s.height() * ratio;
