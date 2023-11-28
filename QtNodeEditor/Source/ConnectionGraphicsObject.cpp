@@ -260,6 +260,7 @@ namespace QtNodes {
             if (view.exec() == QDialog::Accepted) {
                 view.save();
                 m_ConditionDataJsonObject = view.getJsonObject();
+                qDebug()<<m_ConditionDataJsonObject;
             }
             // scene()->removeItem(proxyWidget);
         }

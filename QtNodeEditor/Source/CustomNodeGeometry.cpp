@@ -74,6 +74,8 @@ namespace QtNodes {
 
         QSize size(m_Width, m_Height);
 
+        embededWidget->resize(m_Width, m_ContentAreaHeight + 2 * _portSpasing);
+
         _graphModel.setNodeData(nodeId, NodeRole::Size, size);
     }
 
@@ -176,7 +178,8 @@ namespace QtNodes {
 //                               (captionHeight + size.height() - w->height()) / 2.0);
 //            }
             int yPos = std::max({_iconSize, m_TitleBarHeight}) + _portSpasing + (m_ContentAreaHeight - w->height()) / 2;
-            return QPointF(2 * _portSpasing + maxPortsTextAdvance(nodeId, PortType::In), yPos);
+//            return QPointF(2 * _portSpasing + maxPortsTextAdvance(nodeId, PortType::In), yPos);
+            return QPointF(0, std::max({_iconSize, m_TitleBarHeight}));
         }
         return QPointF();
     }
