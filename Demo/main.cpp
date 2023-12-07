@@ -6,7 +6,7 @@ int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
 
     QString fontPath = QString(
-        R"(C:\Users\kiraYuukiAsuna\Desktop\GoMongoDb\src\SwcManagerClient\Resource\fonts\SourceHanSansCN\SourceHanSansCN-Regular.ttf)");
+        R"(C:\Users\kiraY\Desktop\QtNodeEditorDemo\Resource\fonts\SourceHanSansCN\SourceHanSansCN-Regular.ttf)");
     int loadedFontID = QFontDatabase::addApplicationFont(fontPath);
     QStringList loadedFontFamilies = QFontDatabase::applicationFontFamilies(loadedFontID);
     if (!loadedFontFamilies.empty()) {
@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
 
     QString appDir = qApp->applicationDirPath();
     acss::QtAdvancedStylesheet styleManager;
-    styleManager.setStylesDirPath(R"(C:\Users\kiraYuukiAsuna\Desktop\GoMongoDb\src\SwcManagerClient\Resource\styles)");
+    styleManager.setStylesDirPath(R"(C:\Users\kiraY\Desktop\QtNodeEditorDemo\Resource\styles)");
     styleManager.setOutputDirPath(appDir + "/StylesOutput");
     styleManager.setCurrentStyle("qt_material_modified");
     styleManager.setCurrentTheme("light_blue");
