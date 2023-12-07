@@ -39,13 +39,13 @@ namespace QtNodes {
 
         setAcceptHoverEvents(true);
 
-        //addGraphicsEffect();
+//        addGraphicsEffect();
 
         setZValue(-1.0);
 
         initializePosition();
 
-        m_ConditionDataJsonObject = std::move(conditionDataJsonObject);
+        m_ConditionDataJsonObject = conditionDataJsonObject;
 
         m_ConnectionGeometry.updateGeometry();
     }
@@ -251,18 +251,15 @@ namespace QtNodes {
             Q_ASSERT(graphicsView);
 
             ConnectionPopupWindow view{m_ConditionDataJsonObject, nullptr};
-            // QGraphicsProxyWidget* proxyWidget = scene()->addWidget(&view);
-            // proxyWidget->setPos(scene()->width() - proxyWidget->widget()->width(), 0);
+
             auto posRef = graphicsView->window()->pos()+ QPoint{graphicsView->rect().width(),0};
             qDebug()<<posRef;
             view.move(posRef.x() - view.rect().width() - 16, posRef.y() + 48);
 
             if (view.exec() == QDialog::Accepted) {
-                view.save();
                 m_ConditionDataJsonObject = view.getJsonObject();
                 qDebug()<<m_ConditionDataJsonObject;
             }
-            // scene()->removeItem(proxyWidget);
         }
 
         _connectionState.setConnectionWidgetPressed(false);
@@ -346,13 +343,8 @@ namespace QtNodes {
     void ConnectionGraphicsObject::addGraphicsEffect() {
         auto effect = new QGraphicsBlurEffect;
 
-        effect->setBlurRadius(5);
+        effect->setBlurRadius(1);
         setGraphicsEffect(effect);
-
-        //auto effect = new QGraphicsDropShadowEffect;
-        //auto effect = new ConnectionBlurEffect(this);
-        //effect->setOffset(4, 4);
-        //effect->setColor(QColor(Qt::gray).darker(800));
     }
 
     std::pair<QPointF, QPointF> ConnectionGraphicsObject::pointsC1C2Horizontal() const {

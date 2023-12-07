@@ -12,7 +12,6 @@ public:
     virtual void readFromInternalJsonObject() = 0;
     virtual void writeToInternalJsonObject() = 0;
 
-    void save();
     QJsonObject& getJsonObject();
 
 private:

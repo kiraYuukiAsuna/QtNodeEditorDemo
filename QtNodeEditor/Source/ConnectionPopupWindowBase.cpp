@@ -14,6 +14,3 @@ QJsonObject& ConnectionPopupWindowBase::getJsonObject() {
     return m_DataJsonObject;
 }
 
-void ConnectionPopupWindowBase::save() {
-    writeToInternalJsonObject();
-}

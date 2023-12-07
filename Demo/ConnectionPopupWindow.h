@@ -35,4 +35,6 @@ public:
 
 private:
     Ui::ConnectionPopupWindow *ui;
+
+    Info m_Info;
 };
