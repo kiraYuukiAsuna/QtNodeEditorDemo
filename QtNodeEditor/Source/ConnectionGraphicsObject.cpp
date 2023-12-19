@@ -118,12 +118,9 @@ namespace QtNodes {
 
     QPainterPath ConnectionGraphicsObject::shape() const {
 #ifdef DEBUG_DRAWING
-
         //QPainterPath path;
-
         //path.addRect(boundingRect());
         //return path;
-
 #else
         return ConnectionPainter::getPainterStroke(const_cast<ConnectionGraphicsObject*>(this));
 #endif

@@ -3,8 +3,6 @@
 #include <QtGui/QPainter>
 #include <QtGui/QPainterPath>
 
-#include "Definitions.hpp"
-
 namespace QtNodes {
 
     class ConnectionGeometry;

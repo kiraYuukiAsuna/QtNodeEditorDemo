@@ -22,10 +22,6 @@ namespace QtNodes {
 
         drawNodeRect(painter, ngo);
 
-        drawConnectionPoints(painter, ngo);
-
-        drawFilledConnectionPoints(painter, ngo);
-
         drawNodeCaption(painter, ngo);
 
         drawNodeLeftIcon(painter, ngo);
@@ -35,6 +31,10 @@ namespace QtNodes {
         drawEntryLabels(painter, ngo);
 
         drawResizeRect(painter, ngo);
+
+        drawConnectionPoints(painter, ngo);
+
+        drawFilledConnectionPoints(painter, ngo);
     }
 
     void CustomNodePainter::drawNodeRect(QPainter *painter, NodeGraphicsObject &ngo) const {
@@ -146,20 +146,20 @@ namespace QtNodes {
                 double expandR = 1.8;
                 QPolygon triangle;
                 if (portType == PortType::In) {
-//                    painter->drawEllipse(p, reducedDiameter * r, reducedDiameter * r);
-                    double shiftToRightLength = 0;
-                    triangle.setPoints(3,
-                                       (int) (p.x() + reducedDiameter * r * expandR + shiftToRightLength),
-                                       (int) (p.y()),
-                                       (int) (p.x() - reducedDiameter * r * expandR * cos(3.1415 / 3) +
-                                              shiftToRightLength),
-                                       (int) (p.y() + reducedDiameter * r * expandR * sin(3.1415 / 3)),
-                                       (int) (p.x() - reducedDiameter * r * expandR * cos(3.1415 / 3) +
-                                              shiftToRightLength),
-                                       (int) (p.y() - reducedDiameter * r * expandR * sin(3.1415 / 3)),
-                                       true
-                    );
-                    painter->drawPolygon(triangle);
+                    painter->drawEllipse(p, reducedDiameter * r, reducedDiameter * r);
+//                    double shiftToRightLength = 0;
+//                    triangle.setPoints(3,
+//                                       (int) (p.x() + reducedDiameter * r * expandR + shiftToRightLength),
+//                                       (int) (p.y()),
+//                                       (int) (p.x() - reducedDiameter * r * expandR * cos(3.1415 / 3) +
+//                                              shiftToRightLength),
+//                                       (int) (p.y() + reducedDiameter * r * expandR * sin(3.1415 / 3)),
+//                                       (int) (p.x() - reducedDiameter * r * expandR * cos(3.1415 / 3) +
+//                                              shiftToRightLength),
+//                                       (int) (p.y() - reducedDiameter * r * expandR * sin(3.1415 / 3)),
+//                                       true
+//                    );
+//                    painter->drawPolygon(triangle);
                 } else {
 //                    double shiftToLeftLength = 0;
 //                    triangle.setPoints(3,
@@ -222,24 +222,23 @@ namespace QtNodes {
                         painter->setBrush(nodeStyle.FilledConnectionPointColor);
                     }
 
-//                    painter->drawEllipse(p, diameter * 0.4, diameter * 0.4);
                     double expandR = 1.8;
                     QPolygon triangle;
                     if (portType == PortType::In) {
-//                    painter->drawEllipse(p, diameter * 0.4, diameter * 0.4);
-                        double shiftToRightLength = 0;
-                        triangle.setPoints(3,
-                                           (int) (p.x() + diameter * 0.4 * expandR + shiftToRightLength),
-                                           (int) (p.y()),
-                                           (int) (p.x() - diameter * 0.4 * expandR * cos(3.1415 / 3) +
-                                                  shiftToRightLength),
-                                           (int) (p.y() + diameter * 0.4 * expandR * sin(3.1415 / 3)),
-                                           (int) (p.x() - diameter * 0.4 * expandR * cos(3.1415 / 3) +
-                                                  shiftToRightLength),
-                                           (int) (p.y() - diameter * 0.4 * expandR * sin(3.1415 / 3)),
-                                           true
-                        );
-                    painter->drawPolygon(triangle);
+                        painter->drawEllipse(p, diameter * 0.4, diameter * 0.4);
+//                        double shiftToRightLength = 0;
+//                        triangle.setPoints(3,
+//                                           (int) (p.x() + diameter * 0.4 * expandR + shiftToRightLength),
+//                                           (int) (p.y()),
+//                                           (int) (p.x() - diameter * 0.4 * expandR * cos(3.1415 / 3) +
+//                                                  shiftToRightLength),
+//                                           (int) (p.y() + diameter * 0.4 * expandR * sin(3.1415 / 3)),
+//                                           (int) (p.x() - diameter * 0.4 * expandR * cos(3.1415 / 3) +
+//                                                  shiftToRightLength),
+//                                           (int) (p.y() - diameter * 0.4 * expandR * sin(3.1415 / 3)),
+//                                           true
+//                        );
+//                    painter->drawPolygon(triangle);
                     } else {
 //                        double shiftToLeftLength = 0;
 //                        triangle.setPoints(3,

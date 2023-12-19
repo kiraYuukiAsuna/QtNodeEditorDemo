@@ -9,6 +9,7 @@ namespace QtNodes {
     class ConnectionGraphicsObject;
 
     QPainterPath cubicPath(ConnectionGraphicsObject* connection);
+    QPainterPath orthogonalPath(ConnectionGraphicsObject* connection);
 
     class ConnectionGeometry{
     public:
@@ -17,18 +18,18 @@ namespace QtNodes {
         }
 
         void updateGeometry(){
-            auto cubic = cubicPath(m_ConnectionGraphicsObject);
+            auto path = orthogonalPath(m_ConnectionGraphicsObject);
 
-            m_ConditionWidgetRect = {cubic.pointAtPercent(0.50) - QPoint(m_IconSize.width() / 2, m_IconSize.height() / 2),
+            m_ConditionWidgetRect = {path.pointAtPercent(0.50) - QPoint(m_IconSize.width() / 2, m_IconSize.height() / 2),
                                      QSize(m_IconSize.width(), m_IconSize.height())};
 
             m_IconSize = {64,64};
-            m_IconPosition = cubic.pointAtPercent(0.50) - QPoint(m_IconSize.width() / 2, m_IconSize.height() / 2);
+            m_IconPosition = path.pointAtPercent(0.50) - QPoint(m_IconSize.width() / 2, m_IconSize.height() / 2);
         }
 
         QRectF getShrinkConditionWidgetRect(float shrinkRatio){
-            auto cubic = cubicPath(m_ConnectionGraphicsObject);
-            return {cubic.pointAtPercent(0.50) - QPoint(m_IconSize.width() * shrinkRatio / 2, m_IconSize.height() * shrinkRatio / 2),
+            auto path = orthogonalPath(m_ConnectionGraphicsObject);
+            return {path.pointAtPercent(0.50) - QPoint(m_IconSize.width() * shrinkRatio / 2, m_IconSize.height() * shrinkRatio / 2),
                                      QSize(m_IconSize.width() * shrinkRatio, m_IconSize.height() * shrinkRatio)};
         }
 
@@ -37,8 +38,8 @@ namespace QtNodes {
         }
 
         QPointF getShrinkIconPosition(float shrinkRatio){
-            auto cubic = cubicPath(m_ConnectionGraphicsObject);
-            return cubic.pointAtPercent(0.50) - QPoint(m_IconSize.width() * shrinkRatio / 2, m_IconSize.height() * shrinkRatio / 2);
+            auto path = orthogonalPath(m_ConnectionGraphicsObject);
+            return path.pointAtPercent(0.50) - QPoint(m_IconSize.width() * shrinkRatio / 2, m_IconSize.height() * shrinkRatio / 2);
         }
 
         QRectF getConditionWidgetRect() {

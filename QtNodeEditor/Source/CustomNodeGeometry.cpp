@@ -48,10 +48,10 @@ namespace QtNodes {
         }
 
         // total
-        m_Width = std::max(m_TitleBarWidth, m_ContentAreaWidth + 4 * (int)_portSpasing + (int)maxPortsTextAdvance(nodeId, PortType::In) + (int)maxPortsTextAdvance(nodeId, PortType::Out));
+        m_Width = std::max(m_TitleBarWidth, m_ContentAreaWidth);
 
-        if (m_Width > m_ContentAreaWidth + 4 * (int)_portSpasing + (int)maxPortsTextAdvance(nodeId, PortType::In) +  (int)maxPortsTextAdvance(nodeId, PortType::Out)) {
-            m_ContentAreaWidth = m_Width - 4 * (int)_portSpasing - (int)maxPortsTextAdvance(nodeId, PortType::In) -  (int)maxPortsTextAdvance(nodeId, PortType::Out);
+        if (m_Width > m_ContentAreaWidth) {
+            m_ContentAreaWidth = m_Width;
             if (embededWidget != nullptr) {
                 auto ratio = (float)embededWidget->width() / m_ContentAreaWidth;
                 embededWidget->resize(m_ContentAreaWidth, embededWidget->height() * ratio);
@@ -70,11 +70,11 @@ namespace QtNodes {
             m_ContentAreaHeight = step * std::max({outputCount, inputCount});
         }
 
-        m_Height = std::max(m_TitleBarHeight, _iconSize) + m_ContentAreaHeight + 2 * _portSpasing;
+        m_Height = std::max(m_TitleBarHeight, _iconSize) + m_ContentAreaHeight;
 
         QSize size(m_Width, m_Height);
 
-        embededWidget->resize(m_Width, m_ContentAreaHeight + 2 * _portSpasing);
+        embededWidget->resize(m_Width, m_ContentAreaHeight);
 
         _graphModel.setNodeData(nodeId, NodeRole::Size, size);
     }
@@ -82,32 +82,35 @@ namespace QtNodes {
     QPointF CustomNodeGeometry::portPosition(NodeId const nodeId,
                                                         PortType const portType,
                                                         PortIndex const portIndex) const {
-        unsigned int const step = _portSize + _portSpasing;
-
         QPointF result;
-
-        double totalHeight = 0.0;
-
-        totalHeight += std::max({_iconSize,m_TitleBarHeight});
-        totalHeight += _portSpasing;
-
-        totalHeight += step * portIndex;
-        totalHeight += step / 2.0;
 
         QSize size = _graphModel.nodeData<QSize>(nodeId, NodeRole::Size);
 
         switch (portType) {
             case PortType::In: {
-                double x = 0.0;
+                unsigned int inPortWidth = maxPortsTextAdvance(nodeId, PortType::In) + _portSpasing;
 
-                result = QPointF(x, totalHeight);
+                PortCount nInPorts = _graphModel.nodeData<PortCount>(nodeId, NodeRole::InPortCount);
+
+                double x = (size.width() - (nInPorts - 1) * inPortWidth) / 2.0 + portIndex * inPortWidth;
+
+                double y = 0.0;
+
+                result = QPointF(x, y);
+
                 break;
             }
 
             case PortType::Out: {
-                double x = size.width();
+                unsigned int outPortWidth = maxPortsTextAdvance(nodeId, PortType::Out) + _portSpasing;
+                PortCount nOutPorts = _graphModel.nodeData<PortCount>(nodeId, NodeRole::OutPortCount);
 
-                result = QPointF(x, totalHeight);
+                double x = (size.width() - (nOutPorts - 1) * outPortWidth) / 2.0 + portIndex * outPortWidth;
+
+                double y = size.height();
+
+                result = QPointF(x, y);
+
                 break;
             }
 
@@ -125,17 +128,17 @@ namespace QtNodes {
 
         QRectF rect = portTextRect(nodeId, portType, portIndex);
 
-        p.setY(p.y() + rect.height() / 4.0);
+        p.setX(p.x() - rect.width() / 2.0);
 
         QSize size = _graphModel.nodeData<QSize>(nodeId, NodeRole::Size);
 
         switch (portType) {
             case PortType::In:
-                p.setX(_portSpasing);
+                p.setY(5.0 + rect.height());
                 break;
 
             case PortType::Out:
-                p.setX(size.width() - _portSpasing - rect.width());
+                p.setY(size.height() - 5.0);
                 break;
 
             default:

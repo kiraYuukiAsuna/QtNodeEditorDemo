@@ -115,6 +115,7 @@ set(HPP_HEADER_FILES
         Source/ConnectionGeometry.hpp
         Include/QtNodes/internal/CustomNodePainter.h
         Source/CustomNodeGeometry.hpp
+        Source/PathGenerationAlgorithm.h
 
 )
 
