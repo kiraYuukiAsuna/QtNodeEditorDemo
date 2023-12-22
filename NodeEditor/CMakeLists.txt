@@ -24,11 +24,11 @@ link_directories(
 
 set(PROJECTS_HEADERS
         EditorBase.hpp
-        NodeModelBase.h
+        NodeModel.h
 )
 
 set(PROJECT_SOURCES
-        NodeModelBase.cpp
+        NodeModel.cpp
 
         main.cpp
 )

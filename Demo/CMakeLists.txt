@@ -56,8 +56,8 @@ set(PROJECT_SOURCES
         PerformanceJobInternalWidgetV1.h
         FunctionJobInternalWidgetV1.cpp
         FunctionJobInternalWidgetV1.h
-        ../NodeEditor/NodeModelBase.cpp
-        ../NodeEditor/NodeModelBase.h
+        ../NodeEditor/NodeModel.cpp
+        ../NodeEditor/NodeModel.h
 )
 
 add_executable(Demo ${PROJECTS_HEADERS} ${PROJECT_SOURCES})
