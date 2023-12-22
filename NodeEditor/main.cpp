@@ -3,17 +3,58 @@
 #include <thread>
 
 
-
 int main() {
-
-
-
 
 }
 
 
-
 void test() {
+    // Flexible::FlexibleModel flexible_model;
+    // flexible_model.basicInfo.description = "descriptionxxx";
+    // flexible_model.basicInfo.status = "statusxxx";
+    // flexible_model.basicInfo.uuid = "xxx";
+    // flexible_model.basicInfo.jobId = "jobidxxx";
+    // flexible_model.basicInfo.jobKey = "jobkeyxxx";
+    // flexible_model.basicInfo.jobName = "jobNamexxx";
+    // flexible_model.basicInfo.repeatType = Flexible::RepeatType::Single;
+    // flexible_model.basicInfo.startTime = "startTimexxx";
+    // flexible_model.basicInfo.timeZone = "timeZonexxx";
+    //
+    // Flexible::NodeModel node_model;
+    // node_model.level = 10;
+    // node_model.result = Flexible::ResultType::Success;
+    // node_model.state = "OK";
+    // node_model.timeout = 20;
+    // node_model.uuid = "uuidxxx";
+    // node_model.jobKey = "jobKeyxxx";
+    // node_model.nodeType = Flexible::NodeType::Begin;
+    //
+    // node_model.inputs.push_back(Flexible::NodeInputModel{
+    //     .jobKey = "jobkeyxxx",
+    //     .condition = Flexible::ConditionType::Finished,
+    //     .state = Flexible::InputStateType::Waitting,
+    //     .failureType = Flexible::FailureType::Environment
+    // });
+    //
+    // node_model.outputs.push_back(Flexible::NodeOutputModel{
+    //     .jobKey = "jobkeyxxx",
+    //     .condition = Flexible::ConditionType::Finished,
+    //     .state = Flexible::OutputStateType::Running,
+    //     .failureType = Flexible::FailureType::Environment
+    // });
+    //
+    // flexible_model.nodes.push_back(node_model);
+    //
+    // nlohmann::json jx = flexible_model;
+    // std::string fxstr = jx.dump(4);
+    // std::cout << fxstr << std::endl;
+    //
+    // auto modelx = nlohmann::json::parse(fxstr);
+    // std::cout << modelx.dump(4) << std::endl;
+    // auto modelcc = modelx.get<Flexible::FlexibleModel>();
+
+    //----------------------------------//
+
     // Flexible::NodeModel model1;
     // model1.nodeType = Flexible::NodeType::Begin;
     // model1.inputs.emplace_back();
@@ -36,7 +77,7 @@ void test() {
     // nlohmann::json j = copy;
     // auto model2 = j.get<Flexible::NodeModel>();
     // std::cout << j.dump(4) << std::endl;
-//-------------------------------//
+    //-------------------------------//
     // Flexible::SafeFlexibleModel safeModel;
     // safeModel.writeAccess()->basicInfo.description = "123";
     // safeModel.writeAccess()->basicInfo.description = "456";
@@ -66,7 +107,7 @@ void test() {
     // }catch (std::exception& e) {
     //     std::cerr<<e.what()<<"\n";
     // }
-//--------------------------------//
+    //--------------------------------//
     // Flexible::SafeNodeModel safeModel;
     //
     // try {
