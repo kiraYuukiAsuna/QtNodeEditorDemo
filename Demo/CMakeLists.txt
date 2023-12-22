@@ -29,6 +29,7 @@ set(PROJECTS_HEADERS
         DefaultNodeData.h
         CustomSelectWindow.h
         CustomSelectWidget.h
+        ../NodeEditor/EditorBase.hpp
 )
 
 set(PROJECT_SOURCES
@@ -55,6 +56,8 @@ set(PROJECT_SOURCES
         PerformanceJobInternalWidgetV1.h
         FunctionJobInternalWidgetV1.cpp
         FunctionJobInternalWidgetV1.h
+        ../NodeEditor/NodeModelBase.cpp
+        ../NodeEditor/NodeModelBase.h
 )
 
 add_executable(Demo ${PROJECTS_HEADERS} ${PROJECT_SOURCES})

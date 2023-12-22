@@ -15,4 +15,6 @@ endif ()
 
 add_subdirectory(QtNodeEditor)
 add_subdirectory(Demo)
+add_subdirectory(NodeEditor)
+
 
