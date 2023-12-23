@@ -4,6 +4,56 @@
 
 
 int main() {
+    // 线程安全的model对象
+    Flexible::SafeFlexibleModel safeModel;
+
+    // 通过读写锁访问对象
+    // 读取
+    auto basicInfo = safeModel.readAccess()->basicInfo;
+    // 或者
+    {
+        auto readAccess = safeModel.readAccess();
+        auto basicInfo2 = readAccess->basicInfo;
+    }
+
+    // 写入
+    safeModel.writeAccess()->basicInfo.description = "xxx";
+    // 或者
+    {
+        auto writeAccess = safeModel.writeAccess();
+        writeAccess->basicInfo.description = "xxx";
+    }
+
+    // 反序列化成json对象
+    nlohmann::json jsonOject = *safeModel.readAccess();
+
+    // json对象到字符串
+    std::string jsonStr = jsonOject.dump(4);
+
+    // 解析json字符串到json对象
+    nlohmann::json jsonObject2 = nlohmann::json::parse(jsonStr);
+
+    // json对象到线程安全的model对象(需先构造普通对象再构造线程安全对象)
+    // 普通对象
+    Flexible::FlexibleModel flexible_model = jsonObject2.get<Flexible::FlexibleModel>();
+    // 构造线程安全对象
+    Flexible::SafeFlexibleModel safe_flexible_model(flexible_model);
+
+    // 至此完成 线程安全对象->json对象->json字符串->json对象->线程安全对象 的闭合
+
+    // 一些有用的辅助功能
+    // copy 用于拷贝线程安全对象的数据内容，因为线程安全对象带有mutex锁所以该对象不可复制，当前你可以选择使用智能指针做包装
+    Flexible::FlexibleModel copy_model =  safe_flexible_model.copy();
+    auto smart_pointer_wrapper = std::make_shared<Flexible::SafeFlexibleModel>();
+
+    // assign 拷贝一个普通对象到线程安全对象
+    safe_flexible_model.assign(copy_model);
+
+    // unsafe 以不安全的方式访问线程安全对象里的数据
+    auto basicInfo_unsafe = safe_flexible_model.unsafe().basicInfo;
+
+    // mutex 获取线程安全对象的互斥量
+    auto& mutex = safe_flexible_model.mutex();
 
 }
 
