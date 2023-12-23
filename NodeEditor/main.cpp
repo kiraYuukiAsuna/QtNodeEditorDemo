@@ -42,8 +42,10 @@ int main() {
     // 至此完成 线程安全对象->json对象->json字符串->json对象->线程安全对象 的闭合
 
     // 一些有用的辅助功能
-    // copy 用于拷贝线程安全对象的数据内容，因为线程安全对象带有mutex锁所以该对象不可复制，当前你可以选择使用智能指针做包装
+    // copy 用于拷贝线程安全对象的数据内容，因为线程安全对象带有mutex锁所以该对象不可复制，当然你可以选择使用引用或指针方式，或者使用智能指针做包装
     Flexible::FlexibleModel copy_model =  safe_flexible_model.copy();
+    Flexible::SafeFlexibleModel& ref = safe_flexible_model;
+    Flexible::SafeFlexibleModel* pointer = &safe_flexible_model;
     auto smart_pointer_wrapper = std::make_shared<Flexible::SafeFlexibleModel>();
 
     // assign 拷贝一个普通对象到线程安全对象
