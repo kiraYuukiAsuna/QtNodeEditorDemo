@@ -41,7 +41,7 @@ int main() {
     // 普通对象
     Flexible::FlexibleModel flexible_model = jsonObject2.get<Flexible::FlexibleModel>();
     // 构造线程安全对象
-    Flexible::SafeFlexibleModel safe_flexible_model(flexible_model);
+    Flexible::SafeFlexibleModel safe_flexible_model({}, flexible_model);
 
     // 至此完成 线程安全对象->json对象->json字符串->json对象->线程安全对象 的闭合
 
