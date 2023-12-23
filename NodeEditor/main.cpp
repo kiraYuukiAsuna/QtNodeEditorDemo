@@ -10,18 +10,22 @@ int main() {
     // 通过读写锁访问对象
     // 读取
     auto basicInfo = safeModel.readAccess()->basicInfo;
+    Flexible::RepeatType repeatType = safeModel.readAccess()->basicInfo.repeatType;
     // 或者
     {
         auto readAccess = safeModel.readAccess();
         auto basicInfo2 = readAccess->basicInfo;
+        Flexible::RepeatType repeatType = readAccess->basicInfo.repeatType;
     }
 
     // 写入
     safeModel.writeAccess()->basicInfo.description = "xxx";
+    safeModel.writeAccess()->basicInfo.repeatType = Flexible::RepeatType::Daily;
     // 或者
     {
         auto writeAccess = safeModel.writeAccess();
         writeAccess->basicInfo.description = "xxx";
+        writeAccess->basicInfo.repeatType = Flexible::RepeatType::Daily;
     }
 
     // 反序列化成json对象
